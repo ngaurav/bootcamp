@@ -64,6 +64,7 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'rest_framework'
 ]
 THIRD_PARTY_APPS = [
     'taggit',
@@ -78,6 +79,7 @@ LOCAL_APPS = [
     'bootcamp.messenger',
     'bootcamp.questions',
     'bootcamp.search',
+    'bootcamp.api'
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -86,6 +88,15 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 LOGIN_REDIRECT_URL = 'feeds'
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = '/'
+
+# REST FRAMEWORK DEFAULT RENDERERS
+# http://www.django-rest-framework.org/api-guide/renderers/
+# REST_FRAMEWORK = {
+#    'DEFAULT_RENDERER_CLASSES': (
+#        'rest_framework.renderers.JSONRenderer',
+#        'rest_framework.renderers.BrowsableAPIRenderer',
+#    )
+# }
 
 # PASSWORDS
 # ------------------------------------------------------------------------------

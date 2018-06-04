@@ -8,7 +8,22 @@ from bootcamp.authentication import views as bootcamp_auth_views
 from bootcamp.core import views as core_views
 from bootcamp.search import views as search_views
 
+from rest_framework import routers
+from bootcamp.api import views as api_views
+
+# rest framework router
+router = routers.DefaultRouter()
+router.register(r'users', api_views.UserViewSet)
+router.register(r'activities', api_views.ActivityViewSet)
+
 urlpatterns = [
+    # django rest framework routes
+    url(r'^api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/_users/$', api_views.user_list),
+    url(r'^api/_users/(?P<pk>[0-9]+)/$', api_views.user_detail),
+
+    # standard routes
     url(r'^$', core_views.home, name='home'),
     url(r'^login', auth_views.login, {'template_name': 'core/cover.html'},
         name='login'),
