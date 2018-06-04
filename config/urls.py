@@ -3,6 +3,8 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
+from rest_framework.urlpatterns import format_suffix_patterns
+
 from bootcamp.activities import views as activities_views
 from bootcamp.authentication import views as bootcamp_auth_views
 from bootcamp.core import views as core_views
@@ -14,7 +16,13 @@ from bootcamp.api import views as api_views
 # rest framework router
 router = routers.DefaultRouter()
 router.register(r'users', api_views.UserViewSet)
-router.register(r'activities', api_views.ActivityViewSet)
+router.register(r'activities', api_views.GenericActivityListViewSet)
+router.register(r'notifications', api_views.GenericNotificationListViewSet)
+router.register(r'feeds', api_views.GenericFeedViewSet)
+router.register(r'notifications', api_views.GenericNotificationViewSet)
+router.register(r'articles', api_views.GenericArticleViewSet)
+router.register(r'article-comments', api_views.GenericArticleCommentViewSet)
+router.register(r'messages', api_views.GenericMessageViewSet)
 
 urlpatterns = [
     # django rest framework routes

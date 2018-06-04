@@ -21,13 +21,72 @@ from bootcamp.feeds.models import Feed
 from bootcamp.messenger.models import Message
 from bootcamp.questions.models import Question, Answer
 
-from bootcamp.api.serializers import UserSerializer, ActivitySerializer
+from bootcamp.api.serializers import UserSerializer
+from bootcamp.api.serializers import ActivitySerializer
+from bootcamp.api.serializers import NotificationSerializer
 from bootcamp.api import serializers
 
 
-class GenericFeedList(generics.ListCreateAPIView):
+class GenericFeedViewSet(generics.ListCreateAPIView,
+                         generics.RetrieveAPIView,
+                         viewsets.ViewSet):
     queryset = Feed.objects.all()
-    serializer_class = None
+    serializer_class = serializers.FeedSerializer
+
+
+class GenericNotificationViewSet(generics.ListCreateAPIView,
+                                 viewsets.ViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = serializers.NotificationSerializer
+
+
+class GenericActivityListViewSet(generics.RetrieveUpdateAPIView,
+                                 generics.ListCreateAPIView,
+                                 viewsets.ViewSet):
+    queryset = Activity.objects.all()
+    serializer_class = serializers.ActivitySerializer
+
+
+class GenericNotificationListViewSet(generics.RetrieveUpdateAPIView,
+                                     generics.ListCreateAPIView,
+                                     viewsets.ViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = serializers.NotificationSerializer
+
+
+class GenericArticleViewSet(generics.ListCreateAPIView,
+                            generics.RetrieveUpdateDestroyAPIView,
+                            viewsets.ViewSet):
+    queryset = Article.objects.all()
+    serializer_class = serializers.ArticleSerializer
+
+
+class GenericArticleCommentViewSet(generics.ListCreateAPIView,
+                                   generics.RetrieveUpdateDestroyAPIView,
+                                   viewsets.ViewSet):
+    queryset = ArticleComment.objects.all()
+    serializer_class = serializers.ArticleCommentSerializer
+
+
+class GenericMessageViewSet(generics.ListCreateAPIView,
+                            generics.RetrieveUpdateDestroyAPIView,
+                            viewsets.ViewSet):
+    queryset = Message.objects.all()
+    serializer_class = serializers.MessageSerializer
+
+
+class GenericQuestionViewSet(generics.ListCreateAPIView,
+                             generics.RetrieveUpdateDestroyAPIView,
+                             viewsets.ViewSet):
+    queryset = Question.objects.all()
+    serializer_class = serializers.QuestionSerializer
+
+
+class GenericAnswerViewSet(generics.ListCreateAPIView,
+                           generics.RetrieveUpdateDestroyAPIView,
+                           viewsets.ViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = serializers.AnswerSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -57,6 +116,7 @@ def context(request: RestRequest) -> Dict:
     return {'request': r}
 
 
+# TODO: DEPRECATED
 @api_view(['GET', 'POST'])
 @renderer_classes((JSONRenderer,))
 @csrf_exempt
@@ -79,6 +139,7 @@ def user_list(request: RestRequest) -> RestResponse:
         return RestResponse(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 
+# TODO: DEPRECATED
 @csrf_exempt
 def user_detail(request: RestRequest, pk: Union[int, str]) -> Union[HttpResponse, JsonResponse]:
     """
