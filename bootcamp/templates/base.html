@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
     <!-- For Ajax Search suggestion -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'css/material.min.css' %}?v=1" rel="stylesheet">
     <link href="{% static 'css/bootcamp.css' %}?v=1" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -26,63 +27,12 @@
   <body>
     {% block body %}
       <header>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="{% url 'home' %}">Bootcamp</a>
-            </div>
-            <div class="collapse navbar-collapse" id="menu">
-              <ul class="nav navbar-nav">
-                <li>
-                  <a href="#" id="notifications" data-container="body" data-toggle="popover" data-placement="bottom" title="Notifications">
-                    <span class="glyphicon glyphicon-bell"></span>
-                  </a>
-                </li>
-                <li><a href="{% url 'feeds' %}">{% trans 'Feed' %}</a></li>
-                <li><a href="{% url 'articles' %}">{% trans 'Articles' %}</a></li>
-                <li><a href="{% url 'network' %}">{% trans 'Network' %}</a></li>
-                <li><a href="{% url 'inbox' %}">Inbox  <span class="glyphicon glyphicon-envelope" style="display: none" id="unread-count"></span></a></li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
-                {% if not hide_search %}
-                  <form class="navbar-form navbar-left" role="search" action="{% url 'search' %}">
-                    <div class="input-group" style="width:210px">
-                      <input type="text" class="form-control" id="auto-search" name="q" placeholder="Search">
-                      <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                      </span>
-                    </div>
-                  </form>
-                {% endif %}
-                <!-- JQuery code for Ajax autocomplete search suggestion -->
-                <script type="text/javascript">
-                  $(function() {
-                      $("#auto-search").autocomplete({
-                          source: "{% url 'autocomplete' %}",
-                          minLength: 2
-                      });
-                  });
-                  var currentUser = "{{ user.username }}"
-                </script>
-            <!-- End JQuery code for Ajax autocomplete search suggestion -->
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.profile.get_screen_name }} <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url 'profile' user.username %}">{% trans 'My Profile' %}</a></li>
-                    <li><a href="{% url 'settings' %}">{% trans 'Account Settings' %}</a></li>
-                    <li class="divider"></li>
-                    <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
+        <nav class="navbar-nav fixed-bottom navbar-dark bg-primary nav-justified justify-content-center">
+          <a class="nav-item nav-link" href="{% url 'articles' %}"><i class="material-icons">today</i><br>Today</a>
+          <a class="nav-item nav-link" href="{% url 'feeds' %}"><i class="material-icons">ballot</i><br>Feeds</a>
+          <a class="nav-item nav-link active" href="#"><i class="material-icons">compass_calibration</i><br>Search</a>
+          <a class="nav-item nav-link" href="{% url 'inbox' %}"><i class="material-icons">sms</i><br>Inbox</a>
+          <a class="nav-item nav-link" href="{% url 'settings' %}"><i class="material-icons">account_circle</i><br>Profile</a>
         </nav>
       </header>
       <main>
