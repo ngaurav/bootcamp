@@ -76,7 +76,6 @@ LOCAL_APPS = [
     'bootcamp.core',
     'bootcamp.feeds',
     'bootcamp.messenger',
-    'bootcamp.questions',
     'bootcamp.search',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
