@@ -73,3 +73,9 @@
     </div>
   </div>
 {% endblock main %}
+
+{% block nav %}
+  {% with tab="settings" %}
+    {{block.super}}
+  {% endwith %}
+{% endblock nav %}

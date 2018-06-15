@@ -20,3 +20,9 @@
     {% include 'feeds/partial_feed.html' with feed=feed %}
   </ul>
 {% endblock main %}
+
+{% block nav %}
+  {% with tab="feeds" %}
+    {{block.super}}
+  {% endwith %}
+{% endblock nav %}

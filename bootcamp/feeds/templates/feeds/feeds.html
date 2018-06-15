@@ -64,3 +64,9 @@
     </div>
   </div>
 {% endblock main %}
+
+{% block nav %}
+  {% with tab="feeds" %}
+    {{block.super}}
+  {% endwith %}
+{% endblock nav %}

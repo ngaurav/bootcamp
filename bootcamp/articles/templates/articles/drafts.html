@@ -40,3 +40,9 @@
     </tbody>
   </table>
 {% endblock main %}
+
+{% block nav %}
+  {% with tab="articles" %}
+    {{block.super}}
+  {% endwith %}
+{% endblock nav %}

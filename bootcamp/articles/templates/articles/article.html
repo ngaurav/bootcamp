@@ -24,3 +24,9 @@
   {% include 'articles/partial_article.html' with article=article %}
   {% include 'articles/partial_article_comments.html' with article=article %}
 {% endblock main %}
+
+{% block nav %}
+  {% with tab="articles" %}
+    {{block.super}}
+  {% endwith %}
+{% endblock nav %}

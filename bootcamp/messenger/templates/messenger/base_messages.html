@@ -24,3 +24,9 @@
     <script src="{% static 'js/messages.js' %}"></script>
   </div>
 {% endblock main %}
+
+{% block nav %}
+  {% with tab="messenger" %}
+    {{block.super}}
+  {% endwith %}
+{% endblock nav %}
