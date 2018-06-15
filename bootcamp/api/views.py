@@ -19,7 +19,6 @@ from bootcamp.articles.models import Article, ArticleComment
 from bootcamp.authentication.models import Profile
 from bootcamp.feeds.models import Feed
 from bootcamp.messenger.models import Message
-from bootcamp.questions.models import Question, Answer
 
 from bootcamp.api.serializers import UserSerializer
 from bootcamp.api.serializers import ActivitySerializer
@@ -73,20 +72,6 @@ class GenericMessageViewSet(generics.ListCreateAPIView,
                             viewsets.ViewSet):
     queryset = Message.objects.all()
     serializer_class = serializers.MessageSerializer
-
-
-class GenericQuestionViewSet(generics.ListCreateAPIView,
-                             generics.RetrieveUpdateDestroyAPIView,
-                             viewsets.ViewSet):
-    queryset = Question.objects.all()
-    serializer_class = serializers.QuestionSerializer
-
-
-class GenericAnswerViewSet(generics.ListCreateAPIView,
-                           generics.RetrieveUpdateDestroyAPIView,
-                           viewsets.ViewSet):
-    queryset = Answer.objects.all()
-    serializer_class = serializers.AnswerSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):

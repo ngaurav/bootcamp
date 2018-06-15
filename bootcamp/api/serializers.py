@@ -61,17 +61,3 @@ class MessageSerializer(HyperlinkedModelSerializer):
         model = Message
         fields = ('user', 'message', 'date', 'conversation', 'from_user',
                   'is_read')
-
-
-class QuestionSerializer(HyperlinkedModelSerializer):
-    class Meta:
-        model = Question
-        fields = ('user', 'title', 'description', 'create_date', 'update_date',
-                  'votes', 'favorites', 'has_accepted_answer', 'tags')
-
-
-class AnswerSerializer(HyperlinkedModelSerializer):
-    class Meta:
-        model = Answer
-        field = ('user', 'question', 'description', 'create_date',
-                 'update_date', 'votes', 'is_accepted')
