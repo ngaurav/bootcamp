@@ -7,7 +7,6 @@ from bootcamp.activities.models import Activity, Notification
 from bootcamp.feeds.models import Feed
 from bootcamp.articles.models import Article, ArticleComment
 from bootcamp.messenger.models import Message
-from bootcamp.questions.models import Question, Answer
 
 
 class UserSerializer(HyperlinkedModelSerializer):
