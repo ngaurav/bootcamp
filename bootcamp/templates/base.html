@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'css/material.min.css' %}?v=1" rel="stylesheet">
+    <link href="{% static 'css/waves.min.css' %}?v=1" rel="stylesheet">
     <link href="{% static 'css/bootcamp.css' %}?v=1" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -20,6 +21,7 @@
     <!-- For Ajax Search suggestion -->
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
     <script src="{% static 'js/material.min.js' %}"></script>
+    <script src="{% static 'js/waves.min.js' %}"></script>
     <script src="{% static 'channels/js/websocketbridge.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/bootcamp.js' %}"></script>
     {% block head %}{% endblock %}
@@ -29,11 +31,11 @@
       <header>
         {% block nav %}
         <nav class="navbar-nav fixed-bottom navbar-dark bg-primary nav-justified justify-content-center">
-          <a class="nav-item nav-link {% if tab == 'articles' %}active{% endif %}" href="{% url 'articles' %}"><i class="material-icons">today</i><br>Today</a>
-          <a class="nav-item nav-link {% if tab == 'feeds' %}active{% endif %}" href="{% url 'feeds' %}"><i class="material-icons">ballot</i><br>Feeds</a>
-          <a class="nav-item nav-link {% if tab == 'search' %}active{% endif %}" href="#"><i class="material-icons">compass_calibration</i><br>Search</a>
-          <a class="nav-item nav-link {% if tab == 'messenger' %}active{% endif %}" href="{% url 'inbox' %}"><i class="material-icons">sms</i><br>Inbox</a>
-          <a class="nav-item nav-link {% if tab == 'settings' %}active{% endif %}" href="{% url 'settings' %}"><i class="material-icons">account_circle</i><br>Profile</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'articles' %}active{% endif %}" href="{% url 'articles' %}"><i class="material-icons">today</i><br>Today</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'feeds' %}active{% endif %}" href="{% url 'feeds' %}"><i class="material-icons">ballot</i><br>Feeds</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'search' %}active{% endif %}" href="#"><i class="material-icons">compass_calibration</i><br>Search</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'messenger' %}active{% endif %}" href="{% url 'inbox' %}"><i class="material-icons">sms</i><br>Inbox</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'settings' %}active{% endif %}" href="{% url 'settings' %}"><i class="material-icons">account_circle</i><br>Profile</a>
         </nav>
         {% endblock nav %}
       </header>
@@ -46,4 +48,12 @@
       <script src="{% static 'js/notifications.js' %}"></script>
     {% endblock body %}
   </body>
+  <script>
+    $(function () {
+      Waves.attach('.waves-attach');
+      Waves.init({
+        duration: 600
+      });
+    });
+  </script>
 </html>
