@@ -105,14 +105,14 @@ $(function () {
             type: 'post',
             cache: false,
             success: function (data) {
-                if ($(".like", li).hasClass("text-secondary")) {
-                    $(".like", li).removeClass("text-secondary");
-                    $(".like", li).addClass("text-primary");
+                if ($(".like", li).hasClass("text-primary")) {
+                    $(".like", li).removeClass("text-primary");
+                    $(".like", li).addClass("text-dark");
                     // $(".like .material-icons", li).text("favorite_border");
                 }
                 else {
-                    $(".like", li).removeClass("text-primary");
-                    $(".like", li).addClass("text-secondary");
+                    $(".like", li).removeClass("text-dark");
+                    $(".like", li).addClass("text-primary");
                     // $(".like .material-icons", li).text("favorite");
                 }
                 $(".like .like-count", li).text(data);

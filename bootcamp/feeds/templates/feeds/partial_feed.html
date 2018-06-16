@@ -18,11 +18,11 @@
     <div class="post">
       <nav class="nav nav-justified">
           {% if user in feed.get_likers %}
-            <a class="nav-item nav-link waves-attach waves-effect like text-secondary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+            <a class="nav-item nav-link waves-attach waves-effect like text-primary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
               <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
             </a>
           {% else %}
-            <a class="nav-item nav-link waves-attach waves-effect like text-primary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+            <a class="nav-item nav-link waves-attach waves-effect like text-dark" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
               <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
             </a>
           {% endif %}
