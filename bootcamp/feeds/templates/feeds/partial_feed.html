@@ -3,50 +3,41 @@
 
 
 <li feed-id="{{ feed.pk }}" csrf="{{ csrf_token }}">
-  <div class="feed-container">
-    <a href="{% url 'profile' feed.user.username %}"><img
+  <div class="card">
+    <div class="card-header">
+      <a href="{% url 'profile' feed.user.username %}"><img
         src="{{ feed.user.profile.get_picture }}" class="user"></a>
-    <div class="post">
+      <h5 class="mb-3"><a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a></h5>
+      <h6 class="card-subtitle mb-3 text-muted"><small>{{ feed.date|naturaltime }}</small></h6>
       {% if feed.user == user %}
-        <span class="glyphicon glyphicon-remove remove-feed"
-              title="{% trans 'Click to remove this feed' %}"></span>
-      {% endif %}
-      <h3>
-        <a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a>
-        <small>{{ feed.date|naturaltime }}</small>
-      </h3>
-      <p>{{ feed.linkfy_post|safe }}</p>
-      <div class="interaction" id="interaction">
-        {% if user in feed.get_likers %}
-          <a href="#" style="text-decoration: none;"
-             class="like unlike"
-             title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-            <span class="text">{% trans 'Unlike' %}</span>
-            (<span class="like-count">{{ feed.likes }}</span>)
+    <span class="glyphicon glyphicon-remove remove-feed"
+          title="{% trans 'Click to remove this feed' %}"></span>
+  {% endif %}
+      <p class="card-text">{{ feed.linkfy_post|safe }}</p>
+    </div>
+    <div class="post">
+      <nav class="nav nav-justified">
+          {% if user in feed.get_likers %}
+            <a class="nav-item nav-link waves-attach waves-effect like text-secondary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+              <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
+            </a>
+          {% else %}
+            <a class="nav-item nav-link waves-attach waves-effect like text-primary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+              <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
+            </a>
+          {% endif %}
+          <a class="nav-item nav-link waves-attach waves-effect comment text-dark">
+            <span class="material-icons">insert_comment</span>&nbsp;<span class="comment-count">{{ feed.comments }}</span>
           </a>
-        {% else %}
-          <a href="#" style="text-decoration: none;" class="like"
-             title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-            <span class="text">{% trans 'Like' %}</span>
-            (<span class="like-count">{{ feed.likes }}</span>)
-          </a>
-        {% endif %}
-        <a href="#" style="text-decoration: none;" class="comment">
-          <span
-              class="glyphicon glyphicon-comment"></span> {% trans 'Comment' %}
-          (<span class="comment-count">{{ feed.comments }}</span>)
-        </a>
-      </div>
-      <div class="comments">
+      </nav>
+      <div class="comments card-footer mt-0">
         <form role="form" method="post" action="{{ comment }}"
               onsubmit="return false">
           {% csrf_token %}
           <input type="hidden" name="feed" value="{{ feed.pk }}">
           <input type="text" class="form-control input-sm"
-                 placeholder="{% trans 'Write a comment...' %}"
-                 name="post" maxlength="255">
+                  placeholder="{% trans 'Write a comment...' %}"
+                  name="post" maxlength="255">
         </form>
         <ol class="clearfix">
           {% comment %} Place holder to load feed comments {% endcomment %}

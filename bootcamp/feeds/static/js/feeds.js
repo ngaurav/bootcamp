@@ -92,7 +92,8 @@ $(function () {
     });
 
     $("ul.stream").on("click", ".like", function () {
-        var li = $(this).closest("li");
+        var post = $(this).closest(".post");
+        var li = $(post).closest("li");
         var feed = $(li).attr("feed-id");
         var csrf = $(li).attr("csrf");
         $.ajax({
@@ -104,13 +105,15 @@ $(function () {
             type: 'post',
             cache: false,
             success: function (data) {
-                if ($(".like", li).hasClass("unlike")) {
-                    $(".like", li).removeClass("unlike");
-                    $(".like .text", li).text("Like");
+                if ($(".like", li).hasClass("text-secondary")) {
+                    $(".like", li).removeClass("text-secondary");
+                    $(".like", li).addClass("text-primary");
+                    // $(".like .material-icons", li).text("favorite_border");
                 }
                 else {
-                    $(".like", li).addClass("unlike");
-                    $(".like .text", li).text("Unlike");
+                    $(".like", li).removeClass("text-primary");
+                    $(".like", li).addClass("text-secondary");
+                    // $(".like .material-icons", li).text("favorite");
                 }
                 $(".like .like-count", li).text(data);
             }

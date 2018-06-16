@@ -10,10 +10,6 @@ header .navbar-brand {
   font-family: "Audiowide", cursive;
 }
 
-main .container {
-
-}
-
 .page-header {
   margin: 0;
 }
@@ -75,7 +71,7 @@ main .container {
   margin-bottom: .8em;
 }
 
-.nav-item {
+.navbar-nav .nav-item {
   max-width: 10rem;
   min-height: 3.5rem;
   padding: 0.625rem 0;
