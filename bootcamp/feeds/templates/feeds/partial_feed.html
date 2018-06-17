@@ -8,7 +8,7 @@
       <a href="{% url 'profile' feed.user.username %}"><img
         src="{{ feed.user.profile.get_picture }}" class="user"></a>
       <h5 class="mb-3"><a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a></h5>
-      <h6 class="card-subtitle mb-3 text-muted"><small>{{ feed.date|naturaltime }}</small></h6>
+      <h6 class="card-subtitle mb-3"><small>{{ feed.date|naturaltime }}</small></h6>
       {% if feed.user == user %}
     <span class="glyphicon glyphicon-remove remove-feed"
           title="{% trans 'Click to remove this feed' %}"></span>
@@ -39,7 +39,7 @@
                   placeholder="{% trans 'Write a comment...' %}"
                   name="post" maxlength="255">
         </form>
-        <ol class="clearfix">
+        <ol class="clearfix bg-light">
           {% comment %} Place holder to load feed comments {% endcomment %}
         </ol>
       </div>
