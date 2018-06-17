@@ -10,11 +10,18 @@
       <h5 class="mb-3"><a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a></h5>
       <h6 class="card-subtitle mb-3"><small>{{ feed.date|naturaltime }}</small></h6>
       {% if feed.user == user %}
-    <span class="glyphicon glyphicon-remove remove-feed"
-          title="{% trans 'Click to remove this feed' %}"></span>
-  {% endif %}
+        <span class="glyphicon glyphicon-remove remove-feed" title="{% trans 'Click to remove this feed' %}"></span>
+      {% endif %}
       <p class="card-text">{{ feed.linkfy_post|safe }}</p>
+      
     </div>
+    <!-- <div class="feed_gallery"> -->
+      {% for image in feed.files.all %}
+      <!-- <a href={{ image.input_file.url }}> -->
+        <img class="card-img-top" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+      <!-- </a> -->
+      {% endfor %}
+    <!-- </div> -->
     <div class="post">
       <nav class="nav nav-pills nav-justified">
           {% if user in feed.get_likers %}

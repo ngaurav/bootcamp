@@ -12,3 +12,4 @@ Pillow>=5.0
 pytz>=2017.2
 Unipath>=1.1
 whitenoise>=3.3.0
+django-file-form>=0.3.0

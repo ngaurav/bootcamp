@@ -10,7 +10,8 @@ from django.template.loader import render_to_string
 
 from bootcamp.activities.models import Activity
 from bootcamp.decorators import ajax_required
-from bootcamp.feeds.models import Feed
+from bootcamp.feeds.models import Feed, InputFile
+from bootcamp.feeds.forms import MultipleInputFileForm
 
 FEEDS_NUM_PAGES = 10
 
@@ -121,11 +122,19 @@ def post(request):
     csrf_token = (csrf(request)['csrf_token'])
     feed = Feed()
     feed.user = user
+    form = MultipleInputFileForm(request.POST)
     post = request.POST['post']
     post = post.strip()
-    if len(post) > 0:
+    if len(post) > 0 or form.is_valid():
         feed.post = post[:255]
         feed.save()
+        if form.is_valid():
+            for f in form.cleaned_data['input_file']:
+                InputFile.objects.create(
+                    feed=feed,
+                    input_file=f
+                )
+            form.delete_temporary_files()
 
     html = _html_feeds(last_feed, user, csrf_token)
     return HttpResponse(html)

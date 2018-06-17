@@ -120,3 +120,10 @@ def new_feed_added(sender, instance, created, **kwargs):
 
 
 post_save.connect(new_feed_added, sender=Feed)
+
+class InputFile(models.Model):
+    feed = models.ForeignKey(Feed, related_name='files')
+    input_file = models.FileField(max_length=1023, upload_to='input_file')
+
+    def __str__(self):
+        return self.input_file.__str__()

@@ -86,6 +86,11 @@ $(function () {
                 $("ul.stream").prepend(data);
                 $(".compose").slideUp();
                 $(".compose").removeClass("composing");
+                $(".feed_gallery").justifiedGallery({
+                    rowHeight : 160,
+                    lastRow : 'justify',
+                    margins : 0
+                });
                 hide_stream_update();
             }
         });

@@ -6,6 +6,7 @@
   <link href="{% static 'css/feeds.css' %}?v=1" rel="stylesheet">
   <script src="{% static 'js/jquery.bullseye-1.0-min.js' %}"></script>
   <script src="{% static 'js/feeds.js' %}?v=1"></script>
+  <link rel="stylesheet" href="{% static 'ajaxuploader/css/fileuploader.css' %}">
 {% endblock head %}
 
 {% block main %}
@@ -28,12 +29,13 @@
 
           <div class="compose">
             <h2>{% trans "Compose a new post" %}</h2>
-            <form role="form" id="compose-form">
+            <form role="form" enctype="multipart/form-data" id="compose-form">
               {% csrf_token %}
               <input type="hidden" name="last_feed">
               <div class="form-group">
                 <textarea class="form-control" rows="3" name="post"></textarea>
               </div>
+              {{ file_form }}
               <div class="form-group">
                 <button type="button" class="btn btn-primary btn-post">
                   <span class="glyphicon glyphicon-send"></span> {% trans 'Post' %}
@@ -42,6 +44,7 @@
                 <span class="help-block help-count pull-right">255</span>
               </div>
             </form>
+            {% include 'django_file_form/upload_template.html' %}
           </div>
           <div class="stream-update">
             <a href="#"><span class="new-posts"></span> {% trans 'new posts' %}</a>
@@ -63,6 +66,13 @@
       </div>
     </div>
   </div>
+  <script src="{% static 'ajaxuploader/js/fileuploader.js' %}"></script>
+  <script src="{% static 'file_form/file_form.js' %}"></script>
+  <script>
+    $(function() {
+        initUploadFields($('#compose-form'));
+    });
+  </script>
 {% endblock main %}
 
 {% block nav %}

@@ -69,6 +69,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'taggit',
     'channels',
+    'django_file_form',
+    'django_file_form.ajaxuploader',
 ]
 LOCAL_APPS = [
     'bootcamp.activities',
@@ -191,6 +193,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'bootcamp.feeds.context_processors.file_upload_form',
             ],
         },
     },
