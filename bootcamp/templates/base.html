@@ -48,12 +48,13 @@
       <script src="{% static 'js/notifications.js' %}"></script>
     {% endblock body %}
   </body>
-  <script>
+  <script type="text/javascript">
     $(function () {
       Waves.attach('.waves-attach');
       Waves.init({
         duration: 600
       });
     });
+    var currentUser = "{{ user.username }}"
   </script>
 </html>
