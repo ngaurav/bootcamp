@@ -15,13 +15,13 @@
       <p class="card-text">{{ feed.linkfy_post|safe }}</p>
       
     </div>
-    <!-- <div class="feed_gallery"> -->
+    <div class="feed_gallery">
       {% for image in feed.files.all %}
-      <!-- <a href={{ image.input_file.url }}> -->
-        <img class="card-img-top" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
-      <!-- </a> -->
+      <a href={{ image.input_file.url }}>
+        <img class="" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+      </a>
       {% endfor %}
-    <!-- </div> -->
+    </div>
     <div class="post">
       <nav class="nav nav-pills nav-justified">
           {% if user in feed.get_likers %}
