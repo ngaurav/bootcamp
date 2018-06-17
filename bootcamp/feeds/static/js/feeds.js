@@ -107,11 +107,11 @@ $(function () {
             success: function (data) {
                 if ($(".like", li).hasClass("text-primary")) {
                     $(".like", li).removeClass("text-primary");
-                    $(".like", li).addClass("text-dark");
+                    $(".like", li).removeClass("active");
                     // $(".like .material-icons", li).text("favorite_border");
                 }
                 else {
-                    $(".like", li).removeClass("text-dark");
+                    $(".like", li).addClass("active");
                     $(".like", li).addClass("text-primary");
                     // $(".like .material-icons", li).text("favorite");
                 }

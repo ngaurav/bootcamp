@@ -16,17 +16,17 @@
       <p class="card-text">{{ feed.linkfy_post|safe }}</p>
     </div>
     <div class="post">
-      <nav class="nav nav-justified">
+      <nav class="nav nav-pills nav-justified">
           {% if user in feed.get_likers %}
-            <a class="nav-item nav-link waves-attach waves-effect like text-primary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+            <a class="nav-item nav-link waves-attach waves-effect like active text-primary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
               <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
             </a>
           {% else %}
-            <a class="nav-item nav-link waves-attach waves-effect like text-dark" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+            <a class="nav-item nav-link waves-attach waves-effect like" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
               <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
             </a>
           {% endif %}
-          <a class="nav-item nav-link waves-attach waves-effect comment text-dark">
+          <a class="nav-item nav-link waves-attach waves-effect comment">
             <span class="material-icons">insert_comment</span>&nbsp;<span class="comment-count">{{ feed.comments }}</span>
           </a>
       </nav>
