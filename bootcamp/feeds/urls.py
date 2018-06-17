@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^post/$', views.post, name='post'),
     url(r'^like/$', views.like, name='like'),
     url(r'^comment/$', views.comment, name='comment'),
+    url(r'^share/$', views.share, name='share'),
     url(r'^load/$', views.load, name='load'),
     url(r'^check/$', views.check, name='check'),
     url(r'^load_new/$', views.load_new, name='load_new'),

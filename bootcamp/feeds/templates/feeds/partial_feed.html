@@ -29,6 +29,9 @@
           <a class="nav-item nav-link waves-attach waves-effect comment">
             <span class="material-icons">insert_comment</span>&nbsp;<span class="comment-count">{{ feed.comments }}</span>
           </a>
+          <a class="nav-item nav-link waves-attach waves-effect share">
+            <span class="material-icons">share</span>&nbsp;<span class="share-count">{{ feed.shares }}</span>
+          </a>
       </nav>
       <div class="comments card-footer mt-0">
         <form role="form" method="post" action="{{ comment }}"

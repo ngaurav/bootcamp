@@ -91,7 +91,8 @@ class Notification(models.Model):
     COMMENTED = 'C'
     FAVORITED = 'F'
     EDITED_ARTICLE = 'E'
-    ALSO_COMMENTED = 'S'
+    ALSO_COMMENTED = 'A'
+    SHARED = 'S'
     LOGGED_IN = 'I'
     LOGGED_OUT = 'O'
     NOTIFICATION_TYPES = (
@@ -100,6 +101,7 @@ class Notification(models.Model):
         (FAVORITED, 'Favorited'),
         (EDITED_ARTICLE, 'Edited Article'),
         (ALSO_COMMENTED, 'Also Commented'),
+        (SHARED, 'Shared'),
         (LOGGED_IN, 'Logged In'),
         (LOGGED_OUT, 'Logged Out'),
         )
@@ -108,6 +110,7 @@ class Notification(models.Model):
     _COMMENTED_TEMPLATE = '<a href="/{0}/">{1}</a> commented on your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
     _EDITED_ARTICLE_TEMPLATE = '<a href="/{0}/">{1}</a> edited your article: <a href="/article/{2}/">{3}</a>'  # noqa: E501
     _ALSO_COMMENTED_TEMPLATE = '<a href="/{0}/">{1}</a> also commentend on the post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    _SHARED_TEMPLATE = '<a href="/{0}/">{1}</a> shared your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
     _USER_LOGIN_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged in.'  # noqa: E501
     _USER_LOGOUT_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged out.'  # noqa: E501
 

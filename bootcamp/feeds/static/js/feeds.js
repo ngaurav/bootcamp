@@ -121,6 +121,27 @@ $(function () {
         return false;
     });
 
+    $("ul.stream").on("click", ".share", function () {
+        var post = $(this).closest(".post");
+        var li = $(post).closest("li");
+        var feed = $(li).attr("feed-id");
+        var csrf = $(li).attr("csrf");
+        $.ajax({
+            url: '/feeds/share/',
+            data: {
+                'feed': feed,
+                'post': "",
+                'csrfmiddlewaretoken': csrf
+            },
+            type: 'post',
+            cache: false,
+            success: function (data) {
+                $(".share .share-count", li).text(data);
+            }
+        });
+        return false;
+    });
+
     $("ul.stream").on("click", ".comment", function () {
         var post = $(this).closest(".post");
         if ($(".comments", post).hasClass("tracking")) {

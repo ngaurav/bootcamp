@@ -178,6 +178,32 @@ def comment(request):
 
 @login_required
 @ajax_required
+def share(request):
+    if request.method == 'POST':
+        feed_id = request.POST['feed']
+        feed = Feed.objects.get(pk=feed_id)
+        parent = feed.parent
+        if parent:
+            return HttpResponseBadRequest()
+
+        post = request.POST['post']
+        post = post.strip()
+        if len(post) > 0:
+            post = post[:255]
+        else:
+            post = ""
+        user = request.user
+        feed.share(user=user, post=post)
+        user.profile.notify_shared(feed)
+
+        return HttpResponse(feed.calculate_shares())
+
+    else:
+        return HttpResponseBadRequest()
+
+
+@login_required
+@ajax_required
 def update(request):
     first_feed = request.GET.get('first_feed')
     last_feed = request.GET.get('last_feed')
@@ -216,12 +242,16 @@ def remove(request):
         if feed.user == request.user:
             likes = feed.get_likes()
             parent = feed.parent
+            shared_feed = feed.shared_feed
             for like in likes:
                 like.delete()
 
             feed.delete()
             if parent:
                 parent.calculate_comments()
+            if shared_feed:
+                shared_feed.calculate_shares()
+                request.user.profile.unotify_liked(feed)
 
             return HttpResponse()
 

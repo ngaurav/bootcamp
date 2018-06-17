@@ -23,8 +23,11 @@ class Feed(models.Model):
     post = models.TextField(max_length=255)
     parent = models.ForeignKey(
         'Feed', null=True, blank=True, on_delete=models.SET_NULL)
+    shared_feed = models.ForeignKey(
+        'Feed', null=True, blank=True, related_name='SharedFeed+', on_delete=models.SET_NULL)
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
+    shares = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = _('Feed')
@@ -77,12 +80,26 @@ class Feed(models.Model):
         self.save()
         return self.comments
 
+    def calculate_shares(self):
+        self.shares = Feed.objects.filter(shared_feed=self).count()
+        self.save()
+        return self.shares
+
     def comment(self, user, post):
         feed_comment = Feed(user=user, post=post, parent=self)
         feed_comment.save()
         self.comments = Feed.objects.filter(parent=self).count()
         self.save()
         return feed_comment
+
+    def share(self, user, post):
+        post = post
+        if self.shared_feed is None:
+            feed_share = Feed(user=user, post=post, shared_feed=self)
+        else:
+            feed_share = Feed(user=user, post=post, shared_feed=self.shared_feed)
+        feed_share.save()
+        return feed_share
 
     def linkfy_post(self):
         return bleach.linkify(escape(self.post))

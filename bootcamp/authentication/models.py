@@ -83,6 +83,20 @@ class Profile(models.Model):
                                         from_user=self.user, to_user=feed.user,
                                         feed=feed).delete()
 
+    def notify_shared(self, feed):
+        if self.user != feed.user:
+            Notification(notification_type=Notification.SHARED,
+                         from_user=self.user, to_user=feed.user,
+                         feed=feed).save()
+
+        self.group_notification('shared')
+
+    def unotify_shared(self, feed):
+        if self.user != feed.user:
+            Notification.objects.filter(notification_type=Notification.SHARED,
+                                        from_user=self.user, to_user=feed.user,
+                                        feed=feed).delete()
+
     def notify_commented(self, feed):
         if self.user != feed.user:
             Notification(notification_type=Notification.COMMENTED,
