@@ -4,23 +4,29 @@
 
 <li feed-id="{{ feed.pk }}" csrf="{{ csrf_token }}">
   <div class="card">
-    <div class="card-header">
-      <a href="{% url 'profile' feed.user.username %}"><img
-        src="{{ feed.user.profile.get_picture }}" class="user"></a>
+    <div class="card-header pb-0">
+      <a href="{% url 'profile' feed.user.username %}"><img src="{{ feed.user.profile.get_picture }}" class="user"></a>
+      <a class="float-right dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+      </div>
       <h5 class="mb-3">
         <a class="font-weight-bold" href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a>
         {% if feed.shared_feed %}
-          shared
-          <a href="{% url 'profile' feed.shared_feed.user.username %}">{{ feed.shared_feed.user.profile.get_screen_name }}'s</a>
+          shared a
           <a href="{% url 'feed' feed.shared_feed.pk %}">post</a>
         {% endif %}
       </h5>
       <h6 class="card-subtitle mb-3"><small>{{ feed.date|naturaltime }}</small></h6>
+      
       {% if feed.user == user %}
         <span class="glyphicon glyphicon-remove remove-feed" title="{% trans 'Click to remove this feed' %}"></span>
       {% endif %}
       {% if feed.post %}
-        <p class="card-text">{{ feed.linkfy_post|safe }}</p>
+        <p class="card-text mb-3">{{ feed.linkfy_post|safe }}</p>
       {% endif %}
       
     </div>
@@ -33,7 +39,7 @@
         </a>
         {% endfor %}
       </div>
-      {% if feed.shared_feed.post %}
+      
       <div class="card-header">
         <blockquote class="blockquote mb-0">
           <h5 class="mb-3">
@@ -44,10 +50,12 @@
             <span class="glyphicon glyphicon-remove remove-feed" title="{% trans 'Click to remove this feed' %}"></span>
           {% endif %}
           <!-- <p class="card-text">{{ feed.linkfy_post|safe }}</p> -->
+          {% if feed.shared_feed.post %}
           <footer class="blockquote-footer">{{ feed.shared_feed.linkfy_post|safe }}</footer>
+          {% endif %}
         </blockquote>
       </div>
-      {% endif %}
+      
     {% else %}
       <div class="feed_gallery">
         {% for image in feed.files.all %}
