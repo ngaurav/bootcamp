@@ -7,7 +7,14 @@
     <div class="card-header">
       <a href="{% url 'profile' feed.user.username %}"><img
         src="{{ feed.user.profile.get_picture }}" class="user"></a>
-      <h5 class="mb-3"><a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a></h5>
+      <h5 class="mb-3">
+        <a class="font-weight-bold" href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a>
+        {% if feed.shared_feed %}
+          shared
+          <a href="{% url 'profile' feed.shared_feed.user.username %}">{{ feed.shared_feed.user.profile.get_screen_name }}'s</a>
+          <a href="{% url 'feed' feed.shared_feed.pk %}">post</a>
+        {% endif %}
+      </h5>
       <h6 class="card-subtitle mb-3"><small>{{ feed.date|naturaltime }}</small></h6>
       {% if feed.user == user %}
         <span class="glyphicon glyphicon-remove remove-feed" title="{% trans 'Click to remove this feed' %}"></span>
@@ -15,13 +22,39 @@
       <p class="card-text">{{ feed.linkfy_post|safe }}</p>
       
     </div>
-    <div class="feed_gallery">
-      {% for image in feed.files.all %}
-      <a href={{ image.input_file.url }}>
-        <img class="" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
-      </a>
-      {% endfor %}
-    </div>
+    
+    {% if feed.shared_feed %}
+      <div class="feed_gallery">
+        {% for image in feed.shared_feed.files.all %}
+        <a href={{ image.input_file.url }}>
+          <img class="" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+        </a>
+        {% endfor %}
+      </div>
+      {% if feed.shared_feed.post %}
+      <div class="card-header">
+        <blockquote class="blockquote mb-0">
+          <h5 class="mb-3">
+            <a href="{% url 'profile' feed.shared_feed.user.username %}">{{ feed.shared_feed.user.profile.get_screen_name }}</a>
+          </h5>
+          <h6 class="card-subtitle mb-2"><small>{{ feed.shared_feed.date|naturaltime }}</small></h6>
+          {% if feed.user == user %}
+            <span class="glyphicon glyphicon-remove remove-feed" title="{% trans 'Click to remove this feed' %}"></span>
+          {% endif %}
+          <!-- <p class="card-text">{{ feed.linkfy_post|safe }}</p> -->
+          <footer class="blockquote-footer">{{ feed.shared_feed.linkfy_post|safe }}</footer>
+        </blockquote>
+      </div>
+      {% endif %}
+    {% else %}
+      <div class="feed_gallery">
+        {% for image in feed.files.all %}
+        <a href={{ image.input_file.url }}>
+          <img class="" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+        </a>
+        {% endfor %}
+      </div>
+    {% endif %}
     <div class="post">
       <nav class="nav nav-pills nav-justified">
           {% if user in feed.get_likers %}
