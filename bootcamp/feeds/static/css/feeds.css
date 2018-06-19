@@ -152,3 +152,10 @@ ul.stream li div.post div.interaction a {
   padding-left: 15px;
   padding-right: 15px;
 }
+
+.blockquote-small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+}

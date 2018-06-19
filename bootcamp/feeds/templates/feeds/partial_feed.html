@@ -46,7 +46,7 @@
           </h5>
           <h6 class="card-subtitle mb-2"><small>{{ feed.shared_feed.date|naturaltime }}</small></h6>
           {% if feed.shared_feed.post %}
-          <footer class="blockquote-footer">{{ feed.shared_feed.linkfy_post|safe }}</footer>
+          <footer class="blockquote-small">{{ feed.shared_feed.linkfy_post|safe }}</footer>
           {% endif %}
         </blockquote>
       </div>
