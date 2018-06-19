@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^settings/save_uploaded_picture/$', core_views.save_uploaded_picture,
         name='save_uploaded_picture'),
     url(r'^settings/password/$', core_views.password, name='password'),
-    url(r'^network/$', core_views.network, name='network'),
+    # url(r'^network/$', core_views.network, name='network'),
     url(r'^feeds/', include('bootcamp.feeds.urls')),
     url(r'^articles/', include('bootcamp.articles.urls')),
     url(r'^messages/', include('bootcamp.messenger.urls')),

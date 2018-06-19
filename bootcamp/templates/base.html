@@ -33,6 +33,12 @@
     {% block body %}
       <header>
         {% block nav %}
+        <nav class="navbar navbar-dark bg-primary fixed-top toolbar-waterfall">
+            <form class="form-inline my-2 my-lg-0" role="search" action="{% url 'search' %}">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" name="q" aria-label="Search" value="{{ querystring }}">
+              <input type="hidden" name="type" value="{{ search_type }}">
+            </form>
+        </nav>
         <nav class="navbar-nav fixed-bottom navbar-dark bg-primary nav-justified justify-content-center">
           <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'articles' %}active{% endif %}" href="{% url 'articles' %}"><i class="material-icons">today</i><br>Today</a>
           <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'feeds' %}active{% endif %}" href="{% url 'feeds' %}"><i class="material-icons">ballot</i><br>Feeds</a>

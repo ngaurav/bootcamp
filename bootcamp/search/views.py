@@ -42,7 +42,6 @@ def search(request):
         count['users'] = results['users'].count()
 
         return render(request, 'search/results.html', {
-            'hide_search': True,
             'querystring': querystring,
             'active': search_type,
             'count': count,
@@ -50,7 +49,7 @@ def search(request):
         })
 
     else:
-        return render(request, 'search/search.html', {'hide_search': True})
+        return render(request, 'search/search.html')
 
 
 # For autocomplete suggestions

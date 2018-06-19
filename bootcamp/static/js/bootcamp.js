@@ -10,4 +10,12 @@ $(function () {
     }
     $(".help-count", form).text(length);
   };
+
+  $(window).scroll(function() {
+    if ($(window).scrollTop() > 0) {
+      $(".toolbar-waterfall").addClass("waterfall");
+    } else {
+      $(".toolbar-waterfall").removeClass("waterfall");
+    }
+  });
 });
