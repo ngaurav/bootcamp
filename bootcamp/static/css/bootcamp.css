@@ -25,16 +25,6 @@ header .navbar-brand {
   padding: 1em 0;
 }
 
-#notifications {
-  font-size: 1.5em;
-  padding: 13px;
-  color: #dddddd;
-}
-
-#notifications.new-notifications {
-  color: #428bca;
-}
-
 .popover {
   max-width: 350px;
   width: 350px;

@@ -12,23 +12,15 @@ from django.utils.html import escape
 
 @python_2_unicode_compatible
 class Activity(models.Model):
-    FAVORITE = 'F'
     LIKE = 'L'
-    UP_VOTE = 'U'
-    DOWN_VOTE = 'D'
     ACTIVITY_TYPES = (
-        (FAVORITE, 'Favorite'),
         (LIKE, 'Like'),
-        (UP_VOTE, 'Up Vote'),
-        (DOWN_VOTE, 'Down Vote'),
         )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     activity_type = models.CharField(max_length=1, choices=ACTIVITY_TYPES)
     date = models.DateTimeField(auto_now_add=True)
     feed = models.IntegerField(null=True, blank=True)
-    question = models.IntegerField(null=True, blank=True)
-    answer = models.IntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Activity'
@@ -89,7 +81,6 @@ class Activity(models.Model):
 class Notification(models.Model):
     LIKED = 'L'
     COMMENTED = 'C'
-    FAVORITED = 'F'
     EDITED_ARTICLE = 'E'
     ALSO_COMMENTED = 'A'
     SHARED = 'S'
@@ -98,7 +89,6 @@ class Notification(models.Model):
     NOTIFICATION_TYPES = (
         (LIKED, 'Liked'),
         (COMMENTED, 'Commented'),
-        (FAVORITED, 'Favorited'),
         (EDITED_ARTICLE, 'Edited Article'),
         (ALSO_COMMENTED, 'Also Commented'),
         (SHARED, 'Shared'),
@@ -149,30 +139,6 @@ class Notification(models.Model):
                 escape(self.get_summary(self.feed.post))
                 )
 
-        elif self.notification_type == self.FAVORITED:
-            return self._FAVORITED_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.question.pk,
-                escape(self.get_summary(self.question.title))
-                )
-
-        elif self.notification_type == self.ANSWERED:
-            return self._ANSWERED_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.question.pk,
-                escape(self.get_summary(self.question.title))
-                )
-
-        elif self.notification_type == self.ACCEPTED_ANSWER:
-            return self._ACCEPTED_ANSWER_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.answer.question.pk,
-                escape(self.get_summary(self.answer.description))
-                )
-
         elif self.notification_type == self.EDITED_ARTICLE:
             return self._EDITED_ARTICLE_TEMPLATE.format(
                 escape(self.from_user.username),
@@ -199,22 +165,6 @@ class Notification(models.Model):
             return self._USER_LOGOUT_TEMPLATE.format(
                 escape(self.from_user.username),
                 escape(self.from_user.profile.get_screen_name())
-                )
-
-        elif self.notification_type == self.UPVOTED_Q:
-            return self._UPVOTED_QUESTION_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.question.pk,
-                escape(self.get_summary(self.question.title))
-                )
-
-        elif self.notification_type == self.UPVOTED_A:
-            return self._UPVOTED_ANSWER_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.answer.question.pk,
-                escape(self.get_summary(self.answer.description))
                 )
 
         else:
