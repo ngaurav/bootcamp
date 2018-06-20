@@ -212,7 +212,12 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.length > 0) {
-                        $("ul.stream").append(data)
+                        $("ul.stream").append(data);
+                        $(".feed_gallery").justifiedGallery({
+                            rowHeight : 160,
+                            lastRow : 'justify',
+                            margins : 0
+                        });
                     }
                     else {
                         $("#load_feed").addClass("no-more-feeds");
@@ -239,6 +244,11 @@ $(function () {
             cache: false,
             success: function (data) {
                 $("ul.stream").prepend(data);
+                $(".feed_gallery").justifiedGallery({
+                    rowHeight : 160,
+                    lastRow : 'justify',
+                    margins : 0
+                });
             },
             complete: function () {
                 hide_stream_update();
