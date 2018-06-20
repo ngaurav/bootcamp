@@ -9,9 +9,9 @@
       <a class="float-right dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       </a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item waves-attach waves-effect" href="javascript:void(0)">Report</a>
+        <a class="dropdown-item" href="javascript:void(0)">Report</a>
         {% if feed.user == user %}
-        <a class="dropdown-item waves-attach waves-effect remove-feed" href="javascript:void(0)" 
+        <a class="dropdown-item remove-feed" href="javascript:void(0)" 
            title="{% trans 'Click to remove this feed' %}">Delete</a>
         {% endif %}
       </div>
@@ -55,7 +55,7 @@
       <div class="feed_gallery">
         {% for image in feed.files.all %}
         <a href={{ image.input_file.url }}>
-          <img class="" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+          <img alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
         </a>
         {% endfor %}
       </div>
