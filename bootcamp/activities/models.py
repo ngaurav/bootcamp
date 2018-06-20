@@ -104,10 +104,10 @@ class Notification(models.Model):
     # _USER_LOGIN_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged in.'  # noqa: E501
     # _USER_LOGOUT_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged out.'  # noqa: E501
 
-    _LIKED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} liked your post.</a>'  # noqa: E501
-    _COMMENTED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} commented on your post.</a>'  # noqa: E501
-    _EDITED_ARTICLE_TEMPLATE = '<a class="dropdown-item" href="/article/{2}/">{1} edited your article.</a>'  # noqa: E501
-    _ALSO_COMMENTED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} also commentend on the post.</a>'  # noqa: E501
+    _LIKED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} liked your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    _COMMENTED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} commented on your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    _EDITED_ARTICLE_TEMPLATE = '<a class="dropdown-item" href="/article/{2}/">{1} edited your article: <a href="/article/{2}/">{3}</a>'  # noqa: E501
+    _ALSO_COMMENTED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} also commentend on the post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
     _SHARED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} shared your post.</a>'  # noqa: E501
     _USER_LOGIN_TEMPLATE = '<a class="dropdown-item" href="/{0}/">{1} has just logged in.</a>'  # noqa: E501
     _USER_LOGOUT_TEMPLATE = '<a class="dropdown-item" href="/{0}/">{1} has just logged out.</a>'  # noqa: E501
@@ -157,6 +157,14 @@ class Notification(models.Model):
 
         elif self.notification_type == self.ALSO_COMMENTED:
             return self._ALSO_COMMENTED_TEMPLATE.format(
+                escape(self.from_user.username),
+                escape(self.from_user.profile.get_screen_name()),
+                self.feed.pk,
+                escape(self.get_summary(self.feed.post))
+                )
+
+        elif self.notification_type == self.SHARED:
+            return self._SHARED_TEMPLATE.format(
                 escape(self.from_user.username),
                 escape(self.from_user.profile.get_screen_name()),
                 self.feed.pk,

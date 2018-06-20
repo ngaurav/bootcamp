@@ -3,7 +3,7 @@ $(function () {
         $.ajax({
             url: '/notifications/last/',
             beforeSend: function () {
-            $("#notifications-content").html("<div class='tile'><div class='tile-inner text-black'><strong>Notifications</strong></div></div><div class='tile'><div class='tile-inner text-black text-center'><img src='/static/img/loading.gif'></div>");
+            $("#notifications-content").html("<div class='dropdown-item'>Loading ...</div>");
             $("#notifications-badge").removeAttr("data-badge");
             },
             success: function (data) {
