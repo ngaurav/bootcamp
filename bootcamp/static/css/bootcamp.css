@@ -67,8 +67,8 @@ header .navbar-brand {
   padding: 0.625rem 0;
 }
 
-.fixed-top .navbar-nav{
-  max-width: 45rem;
+.max-wd-60{
+  max-width: 60rem;
 }
 
 .fixed-top .nav-link{

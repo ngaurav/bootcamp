@@ -13,12 +13,16 @@
 {% endblock head %}
 
 {% block main %}
-  <div class="page-header">
+  <!-- <div class="page-header">
     <h1>Feed</h1>
+  </div> -->
+<div class="row">
+  <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 pr-5 pl-5 max-wd-60">
+    <ul class="stream">
+      {% include 'feeds/partial_feed.html' with feed=feed %}
+    </ul>
   </div>
-  <ul class="stream">
-    {% include 'feeds/partial_feed.html' with feed=feed %}
-  </ul>
+</div>
 {% endblock main %}
 
 {% block nav %}
