@@ -38,64 +38,6 @@ $(function () {
         $(document).attr("title", page_title);
     }
 
-    $("body").keydown(function (evt) {
-        var keyCode = evt.which?evt.which:evt.keyCode;
-        if (evt.ctrlKey && keyCode == 80) {
-            $(".btn-compose").click();
-            return false;
-        }
-    });
-
-    $("#compose-form textarea[name='post']").keydown(function (evt) {
-        var keyCode = evt.which?evt.which:evt.keyCode;
-        if (evt.ctrlKey && (keyCode == 10 || keyCode == 13)) {
-            $(".btn-post").click();
-        }
-    });
-
-    $(".btn-compose").click(function () {
-        if ($(".compose").hasClass("composing")) {
-            $(".compose").removeClass("composing");
-            $(".compose").slideUp();
-        }
-        else {
-            $(".compose").addClass("composing");
-            $(".compose textarea").val("");
-            $(".compose").slideDown(400, function () {
-                $(".compose textarea").focus();
-            });
-        }
-    });
-
-    $(".btn-cancel-compose").click(function () {
-        $(".compose").slideUp();
-    });
-
-    $(".btn-post").click(function () {
-        var last_feed = $(".stream li:first-child").attr("feed-id");
-        if (last_feed == undefined) {
-            last_feed = "0";
-        }
-        $("#compose-form input[name='last_feed']").val(last_feed);
-        $.ajax({
-            url: '/feeds/post/',
-            data: $("#compose-form").serialize(),
-            type: 'post',
-            cache: false,
-            success: function (data) {
-                $("ul.stream").prepend(data);
-                $(".compose").slideUp();
-                $(".compose").removeClass("composing");
-                $(".feed_gallery").justifiedGallery({
-                    rowHeight : 160,
-                    lastRow : 'justify',
-                    margins : 0
-                });
-                hide_stream_update();
-            }
-        });
-    });
-
     $("ul.stream").on("click", ".like", function () {
         var post = $(this).closest(".post");
         var li = $(post).closest("li");
@@ -277,10 +219,6 @@ $(function () {
                 });
             }
         });
-    });
-
-    $("#compose-form textarea[name='post']").keyup(function () {
-        $(this).count(255);
     });
 
     function update_feeds () {
