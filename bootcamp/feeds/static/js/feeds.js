@@ -1,5 +1,6 @@
 $(function () {
     var page_title = $(document).attr("title");
+    var shared_post;
 
     // WebSocket connection management block.
     // Correctly decide between ws:// and wss://
@@ -72,18 +73,25 @@ $(function () {
         var post = $(this).closest(".post");
         var li = $(post).closest("li");
         var feed = $(li).attr("feed-id");
-        var csrf = $(li).attr("csrf");
+        $("#share-form input[name='feed']").val(feed);
+        shared_post = li;
+    });
+
+
+    $('#share-modal').on('shown.bs.modal', function() {
+        textarea = $("#share-form textarea[name='post']");
+        textarea.val("");
+    });
+
+    $("#share-modal").on("click", "#btn-share", function () {
         $.ajax({
             url: '/feeds/share/',
-            data: {
-                'feed': feed,
-                'post': "",
-                'csrfmiddlewaretoken': csrf
-            },
+            data: $("#share-form").serialize(),
             type: 'post',
             cache: false,
             success: function (data) {
-                $(".share .share-count", li).text(data);
+                $(".btn-cancel-share").click();
+                $(".share .share-count", shared_post).text(data);
             }
         });
         return false;

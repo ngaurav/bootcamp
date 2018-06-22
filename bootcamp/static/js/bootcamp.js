@@ -67,7 +67,6 @@ $(function () {
             $(".stream-update").hide();
             $(".stream-update .new-posts").text("");
             $(document).attr("title", page_title);
-            $("#compose-form textarea[name='post']").val("");
         }
     });
   });
