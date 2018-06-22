@@ -6,7 +6,6 @@
   <link href="{% static 'css/feeds.css' %}?v=1" rel="stylesheet">
   <script src="{% static 'js/jquery.bullseye-1.0-min.js' %}"></script>
   <script src="{% static 'js/feeds.js' %}?v=1"></script>
-  <link rel="stylesheet" href="{% static 'ajaxuploader/css/fileuploader.css' %}">
 {% endblock head %}
 
 {% block main %}
@@ -39,13 +38,6 @@
       </div>
     </div>
   </div>
-  <script src="{% static 'ajaxuploader/js/fileuploader.js' %}"></script>
-  <script src="{% static 'file_form/file_form.js' %}"></script>
-  <script>
-    $(function() {
-        initUploadFields($('#compose-form'));
-    });
-  </script>
 {% endblock main %}
 
 {% block nav %}

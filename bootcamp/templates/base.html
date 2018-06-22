@@ -14,6 +14,7 @@
     <link href="{% static 'css/waves.min.css' %}?v=1" rel="stylesheet">
     <link href="{% static 'css/bootcamp.css' %}?v=1" rel="stylesheet">
     <link href="{% static 'css/justifiedGallery.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fileuploader.css' %}" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -86,7 +87,7 @@
                 <textarea class="form-control" rows="3" name="post"></textarea>
                 {{ file_form }}
               </form>
-              {% include 'django_file_form/upload_template.html' %}
+              {% include 'upload_template.html' %}
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary btn-cancel-compose" data-dismiss="modal">Close</button>
@@ -96,7 +97,12 @@
         </div>
       </div>
       <script src="{% static 'js/notifications.js' %}"></script>
+      <script src="{% static 'ajaxuploader/js/fileuploader.js' %}"></script>
+      <script src="{% static 'file_form/file_form.js' %}"></script>
       <script type="text/javascript">
+        $(function() {
+          initUploadFields($('#compose-form'));
+        });
         $(function () {
           Waves.attach('.waves-attach');
           Waves.init({
