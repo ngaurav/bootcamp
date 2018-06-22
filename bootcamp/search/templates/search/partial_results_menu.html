@@ -1,16 +1,16 @@
 {% load i18n %}
 
-<div class="list-group">
-  <a href="{% url 'search' %}?q={{ querystring }}&type=feed" class="list-group-item{% if active == 'feed' %} active{% endif %}">
+<nav class="btn-group btn-group-toggle">
+  <a href="{% url 'search' %}?q={{ querystring }}&type=feed" class="btn btn-primary {% if active == 'feed' %} active{% endif %}">
     <span>{% trans 'Feed' %}</span>
-    <span class="badge">{{ count.feed }}</span>
+    <span class="badge badge-light badge-pill">{{ count.feed }}</span>
   </a>
-  <a href="{% url 'search' %}?q={{ querystring }}&type=articles" class="list-group-item{% if active == 'articles' %} active{% endif %}">
+  <a href="{% url 'search' %}?q={{ querystring }}&type=articles" class="btn btn-primary{% if active == 'articles' %} active{% endif %}">
     <span>{% trans 'Articles' %}</span>
-    <span class="badge">{{ count.articles }}</span>
+    <span class="badge badge-light badge-pill">{{ count.articles }}</span>
   </a>
-  <a href="{% url 'search' %}?q={{ querystring }}&type=users" class="list-group-item{% if active == 'users' %} active{% endif %}">
+  <a href="{% url 'search' %}?q={{ querystring }}&type=users" class="btn btn-primary{% if active == 'users' %} active{% endif %}">
     <span>{% trans 'Users' %}</span>
-    <span class="badge">{{ count.users }}</span>
+    <span class="badge badge-light badge-pill">{{ count.users }}</span>
   </a>
-</div>
+</nav>
