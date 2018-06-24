@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.2" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200" xml:space="preserve" class="video-overlay-play-button" alt="Play video">>
+    <circle cx="100" cy="100" r="90" fill="none" stroke-width="15" stroke="#fff"/>
+    <circle cx="100" cy="100" r="90" fill="#00000066"/>
+    <polygon points="70, 55 70, 145 145, 100" fill="#fff"/>
+</svg>
