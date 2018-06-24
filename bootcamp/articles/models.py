@@ -21,7 +21,9 @@ class Article(models.Model):
     )
 
     title = models.CharField(max_length=255, null=False, unique=True)
+    description = models.CharField(max_length=50, null=True, blank=True)
     slug = models.SlugField(max_length=80, null=True, blank=True)
+    url = models.CharField(max_length=50, null=True, blank=True)
     tags = TaggableManager()
     content = models.TextField(max_length=4000)
     status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
