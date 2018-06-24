@@ -9,8 +9,8 @@ $(function () {
       var selection = $(_textarea).selection();
 
       switch (action) {
-        case "header":
-          $(_textarea).selection("replace", {text: "# " + selection});
+        case "code":
+          $(_textarea).selection("replace", {text: "`" + selection + "`"});
           break;
         case "bold":
           $(_textarea).selection("replace", {text: "**" + selection + "**"});
