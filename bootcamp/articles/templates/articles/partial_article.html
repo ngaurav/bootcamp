@@ -2,7 +2,7 @@
   {% if article.cover_youtube_embed %}
     <iframe class="card-img-top" src="{{article.cover_url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   {% else %}
-    <img class="card-img-top" src="{{article.cover_url}}"></img>
+    <img class="card-img-top" style="width:100%; height: auto;" src="{{article.cover_url}}"></img>
   {% endif %}
   <div class="card-body">
     <p class="card-title"><a href="{% url 'article' article.slug %}">{{ article.title }}</a></p>
