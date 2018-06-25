@@ -47,7 +47,7 @@
           </div>
           
         {% else %}
-          <div class="feed_gallery">
+          <div class="feed_gallery card-img-bottom">
             {% for image in feed.files.all %}
             <a href={{ image.input_file.url }}>
               <img alt="{{ image.input_file }}" src="{{ image.input_file.url }}">

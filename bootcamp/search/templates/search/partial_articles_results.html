@@ -1,22 +1,28 @@
 {% load i18n %}
 
-<!-- <h2>{% trans 'Articles' %}</h2> -->
 {% if results %}
   <ul class="articles-results">
     {% for article in results %}
       <li article-slug="{{ article.slug }}">
-        <h4><a href="{% url 'article' article.slug %}">{{ article.title }}</a></h4>
-        <div class="info">
-          <span class="date">
-            <span class="glyphicon glyphicon-calendar"></span>
-            {{ article.create_date }}
-          </span>
-          <span class="user">
-            <a href="{% url 'profile' article.create_user.username %}"><img src="{{ article.create_user.profile.get_picture }}"></a>
-            <a href="{% url 'profile' article.create_user.username %}">{{ article.create_user.profile.get_screen_name }}</a>
-          </span>
+        <div class="card">
+          {% if article.cover_youtube_embed %}
+            <iframe class="card-img-top" src="{{article.cover_url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          {% else %}
+            <img class="card-img-top" style="width:100%; height: auto;" src="{{article.cover_url}}"></img>
+          {% endif %}
+          <div class="card-body">
+            <p class="card-title"><a href="{% url 'article' article.slug %}">{{ article.title }}</a></p>
+            <p class="card-text">{{article.description}}</p>
+            {% if article.tags.names %}
+              <p class="card-text">
+                {% for tag in article.tags.names %}
+                <a href="{% url 'tag' tag %}" class="badge badge-pill badge-primary">{{ tag }}</a>
+                {% endfor %}
+              </p>
+            {% endif %}
+          </div>
         </div>
-        <div class="article-content">{{ article.get_summary_as_markdown|safe }}</div>
+        
       </li>
     {% endfor %}
   </ul>

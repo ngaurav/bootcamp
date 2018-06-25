@@ -4,17 +4,14 @@
 
 .results ul li {
   list-style: none;
-  padding: .8em .4em;
-  border-bottom: 1px solid #eeeeee;
+  padding: .75em .5em;
 }
 
-.results ul li:last-child {
-  border-bottom: none;
-}
-
-.results ul li img {
-  width: 45px;
-  border-radius: 5px;
+.results ul li img.user {
+  width: 3rem;
+  margin-right: 0.5rem;
+  border-radius: 3rem;
+  float: left;
 }
 
 .feed-results h3 {
