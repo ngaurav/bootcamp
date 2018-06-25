@@ -1,16 +1,18 @@
 {% load i18n %}
 
-<nav class="nav nav-tabs">
-  <a href="{% url 'search' %}?q={{ querystring }}&type=feed" class="nav-item nav-link{% if active == 'feed' %} active{% endif %}">
-    <span>{% trans 'Feed' %}</span>
-    <span class="badge badge-light badge-pill">{{ count.feed }}</span>
-  </a>
-  <a href="{% url 'search' %}?q={{ querystring }}&type=articles" class="nav-item nav-link{% if active == 'articles' %} active{% endif %}">
-    <span>{% trans 'Articles' %}</span>
-    <span class="badge badge-light badge-pill">{{ count.articles }}</span>
-  </a>
-  <a href="{% url 'search' %}?q={{ querystring }}&type=users" class="nav-item nav-link{% if active == 'users' %} active{% endif %}">
-    <span>{% trans 'Users' %}</span>
-    <span class="badge badge-light badge-pill">{{ count.users }}</span>
-  </a>
-</nav>
+<div class="navbar navbar-full navbar-dark bg-primary justify-content-center nav-justified" id="search-tab">
+  <nav class="navbar-nav nav-tabs nav-item max-wd-60">
+    <a href="{% url 'search' %}?q={{ querystring }}&type=feed" class="nav-item nav-link{% if active == 'feed' %} active text-white{% endif %}">
+      <span>{% trans 'Feed' %}</span>
+      <span class="badge badge-light badge-pill">{{ count.feed }}</span>
+    </a>
+    <a href="{% url 'search' %}?q={{ querystring }}&type=articles" class="nav-item nav-link{% if active == 'articles' %} active{% endif %}">
+      <span>{% trans 'Articles' %}</span>
+      <span class="badge badge-light badge-pill">{{ count.articles }}</span>
+    </a>
+    <a href="{% url 'search' %}?q={{ querystring }}&type=users" class="nav-item nav-link{% if active == 'users' %} active{% endif %}">
+      <span>{% trans 'Users' %}</span>
+      <span class="badge badge-light badge-pill">{{ count.users }}</span>
+    </a>
+  </nav>
+</div>
