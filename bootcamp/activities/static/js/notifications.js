@@ -1,24 +1,15 @@
 $(function () {
-    $('#notifications').popover({html: true, content: 'Loading...', trigger: 'manual'});
-
-    $("#notifications").click(function () {
-        if ($(".popover").is(":visible")) {
-            $("#notifications").popover('hide');
-        }
-        else {
-            $("#notifications").popover('show');
-            $.ajax({
-                url: '/notifications/last/',
-                beforeSend: function () {
-                    $(".popover-content").html("<div style='text-align:center'><img src='/static/img/loading.gif'></div>");
-                    $("#notifications").removeClass("new-notifications");
-                },
-                success: function (data) {
-                    $(".popover-content").html(data);
-                }
-            });
-        }
-        return false;
+    $('#notifications').on('show.bs.dropdown', function () {
+        $.ajax({
+            url: '/notifications/last/',
+            beforeSend: function () {
+            $("#notifications-content").html("<div class='dropdown-item'>Loading ...</div>");
+            $("#notifications-badge").removeAttr("data-badge");
+            },
+            success: function (data) {
+            $("#notifications-content").html(data);
+            }
+        });
     });
 
     // Correctly decide between ws:// and wss://

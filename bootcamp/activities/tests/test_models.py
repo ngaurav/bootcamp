@@ -4,7 +4,6 @@ from django.test import TestCase
 from bootcamp.activities.models import Activity, Notification
 from bootcamp.articles.models import Article
 from bootcamp.feeds.models import Feed
-from bootcamp.questions.models import Question, Answer
 from bootcamp.authentication.models import Profile
 
 
@@ -28,20 +27,6 @@ class TestModels(TestCase):
             post='A not so long text',
             likes=0,
             comments=0
-        )
-        self.question = Question.objects.create(
-            user=self.user,
-            title='A Short Title',
-            description='A reaaaaally loooong content',
-            favorites=0,
-            has_accepted_answer=True
-        )
-        self.answer = Answer.objects.create(
-            user=self.user,
-            question=self.question,
-            description='A reaaaaally loooong content',
-            votes=0,
-            is_accepted=True
         )
         self.article = Article.objects.create(
             title='A really nice title',
@@ -147,56 +132,6 @@ class TestModels(TestCase):
         self.assertEqual(str(notification), test_string)
         self.assertNotEqual(str(notification), 'c')
 
-    def test_register_fav_notification(self):
-        notification = Notification.objects.create(
-            from_user=self.user,
-            to_user=self.other_user,
-            feed=self.feed,
-            question=self.question,
-            notification_type='F',
-            is_read=False
-        )
-        test_string = notification._FAVORITED_TEMPLATE.format(
-            self.user.username, self.user.profile.get_screen_name(),
-            self.question.pk, notification.get_summary(self.question.title))
-        self.assertTrue(isinstance(notification, Notification))
-        self.assertEqual(str(notification), test_string)
-        self.assertNotEqual(str(notification), 'f')
-
-    def test_register_answered_notification(self):
-        notification = Notification.objects.create(
-            from_user=self.user,
-            to_user=self.other_user,
-            feed=self.feed,
-            question=self.question,
-            notification_type='A',
-            is_read=False
-        )
-        test_string = notification._ANSWERED_TEMPLATE.format(
-            self.user.username, self.user.profile.get_screen_name(),
-            self.question.pk, notification.get_summary(self.question.title))
-        self.assertTrue(isinstance(notification, Notification))
-        self.assertEqual(str(notification), test_string)
-        self.assertNotEqual(str(notification), 'a')
-
-    def test_register_accepted_notification(self):
-        notification = Notification.objects.create(
-            from_user=self.user,
-            to_user=self.other_user,
-            feed=self.feed,
-            question=self.question,
-            answer=self.answer,
-            notification_type='W',
-            is_read=False
-        )
-        test_string = notification._ACCEPTED_ANSWER_TEMPLATE.format(
-            self.user.username, self.user.profile.get_screen_name(),
-            self.answer.question.pk, notification.get_summary(
-                self.answer.description))
-        self.assertTrue(isinstance(notification, Notification))
-        self.assertEqual(str(notification), test_string)
-        self.assertNotEqual(str(notification), 'w')
-
     def test_register_also_comm_notification(self):
         notification = Notification.objects.create(
             from_user=self.user,
@@ -270,31 +205,5 @@ class TestModels(TestCase):
                 self.user.username,
                 self.user.profile.get_screen_name()
                 )
-        assert isinstance(notification, Notification)
-        assert str(notification) == test_string
-
-    def test_upvote_question_notification(self):
-        Profile.objects.get(
-            user=self.other_user).notify_upvoted_question(self.question)
-        notification = Notification.objects.get(question=self.question)
-        test_string = Notification._UPVOTED_QUESTION_TEMPLATE.format(
-            self.other_user.username,
-            self.other_user.profile.get_screen_name(),
-            self.question.pk,
-            Notification.get_summary(notification, self.question.title)
-        )
-        assert isinstance(notification, Notification)
-        assert str(notification) == test_string
-
-    def test_upvote_answer_notification(self):
-        Profile.objects.get(
-            user=self.other_user).notify_upvoted_answer(self.answer)
-        notification = Notification.objects.get(answer=self.answer)
-        test_string = Notification._UPVOTED_ANSWER_TEMPLATE.format(
-            self.other_user.username,
-            self.other_user.profile.get_screen_name(),
-            self.answer.pk,
-            Notification.get_summary(notification, self.answer.description)
-        )
         assert isinstance(notification, Notification)
         assert str(notification) == test_string

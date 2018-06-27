@@ -1,22 +1,62 @@
 {% load i18n %}
 {% load humanize %}
 
-<h2>{% trans 'Feed' %}</h2>
+<!-- <h2>{% trans 'Feed' %}</h2> -->
 {% if results %}
   <ul class="feed-results">
     {% for feed in results %}
-      <li feed-id="{{ feed.pk }}">
-        <a href="{% url 'profile' feed.user.username %}">
-          <img src="{{ feed.user.profile.get_picture }}" class="pull-left">
-        </a>
-        <div class="post">
-          <h3>
-            <a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a>
-            <small>{{ feed.date|naturaltime }}</small>
-          </h3>
-          <p>{{ feed.linkfy_post|safe }}</p>
+    <li feed-id="{{ feed.pk }}" csrf="{{ csrf_token }}">
+      <div class="card">
+        <div class="card-header pb-0">
+          <a href="{% url 'profile' feed.user.username %}"><img src="{{ feed.user.profile.get_picture }}" class="user"></a>
+          </a>
+          <h5 class="mb-3">
+            <a class="font-weight-bold" href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a>
+            {% if feed.shared_feed %}
+              shared a
+              <a href="{% url 'feed' feed.shared_feed.pk %}">post</a>
+            {% endif %}
+          </h5>
+          <h6 class="card-subtitle mb-3"><small>{{ feed.date|naturaltime }}</small></h6>
+          
+          {% if feed.post %}
+            <p class="card-text mb-3">{{ feed.linkfy_post|safe }}</p>
+          {% endif %}
+          
         </div>
-      </li>
+        
+        {% if feed.shared_feed %}
+          <div class="feed_gallery">
+            {% for image in feed.shared_feed.files.all %}
+            <a href={{ image.input_file.url }}>
+              <img class="" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+            </a>
+            {% endfor %}
+          </div>
+          
+          <div class="card-header">
+            <blockquote class="blockquote mb-0">
+              <h5 class="mb-3">
+                <a href="{% url 'profile' feed.shared_feed.user.username %}">{{ feed.shared_feed.user.profile.get_screen_name }}</a>
+              </h5>
+              <h6 class="card-subtitle mb-2"><small>{{ feed.shared_feed.date|naturaltime }}</small></h6>
+              {% if feed.shared_feed.post %}
+              <footer class="blockquote-small">{{ feed.shared_feed.linkfy_post|safe }}</footer>
+              {% endif %}
+            </blockquote>
+          </div>
+          
+        {% else %}
+          <div class="feed_gallery card-img-bottom">
+            {% for image in feed.files.all %}
+            <a href={{ image.input_file.url }}>
+              <img alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+            </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </li>
     {% endfor %}
   </ul>
 {% else %}

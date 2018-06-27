@@ -1,17 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Audiowide);
 
 body {
-  padding-top: 70px;
+  padding: 4rem 0;
 }
 
 header .navbar-brand {
   font-size: 1.4em;
   font-weight: 200;
   font-family: "Audiowide", cursive;
-}
-
-main .container {
-
 }
 
 .page-header {
@@ -27,16 +23,6 @@ main .container {
 .no-data {
   text-align: center;
   padding: 1em 0;
-}
-
-#notifications {
-  font-size: 1.5em;
-  padding: 13px;
-  color: #dddddd;
-}
-
-#notifications.new-notifications {
-  color: #428bca;
 }
 
 .popover {
@@ -73,4 +59,48 @@ main .container {
 
 .markdown {
   margin-bottom: .8em;
+}
+
+.fixed-bottom .nav-item {
+  max-width: 10rem;
+  min-height: 3.5rem;
+  padding: 0.625rem 0;
+}
+
+.max-wd-60{
+  max-width: 60rem;
+}
+
+.fixed-top .nav-link{
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.fixed-top .navbar-brand{
+  margin-left: 0.5rem;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }

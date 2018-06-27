@@ -9,8 +9,12 @@
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
     <!-- For Ajax Search suggestion -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel ="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/material.min.css' %}?v=1" rel="stylesheet">
+    <link href="{% static 'css/waves.min.css' %}?v=1" rel="stylesheet">
     <link href="{% static 'css/bootcamp.css' %}?v=1" rel="stylesheet">
+    <link href="{% static 'css/justifiedGallery.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fileuploader.css' %}" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -18,82 +22,101 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- For Ajax Search suggestion -->
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/material.min.js' %}"></script>
+    <script src="{% static 'js/waves.min.js' %}"></script>
     <script src="{% static 'channels/js/websocketbridge.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/bootcamp.js' %}"></script>
+    <script src="{% static 'js/jquery.justifiedGallery.min.js' %}"></script>
+    <script src="{% static 'js/youtube_embed.js' %}"></script>
     {% block head %}{% endblock %}
   </head>
   <body>
     {% block body %}
       <header>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+        {% block nav %}
+        <nav class="navbar navbar-dark bg-primary fixed-top toolbar-waterfall nav-fill justify-content-center">
+          <ul class="navbar-nav nav-item max-wd-60">
+              <a class="navbar-brand" href="#"><span class="material-icons">trending_up</span></a>
+            <li class="nav-item">
+              <form class="form mr-5 ml-5" role="search" action="{% url 'search' %}">
+                <input class="form-control" type="text" placeholder="Search" name="q" aria-label="Search" value="{{ querystring }}">
+                <input type="hidden" name="type" value="{{ search_type }}">
+              </form>
+            </li>
+            <li class="dropdown" id="notifications">
+              <a class="nav-link active" href="#" id="notifications-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-icons">notifications</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifications-button" id="notifications-content">                
+              </div>
+              <button class="btn btn-float btn-primary" id="btn-compose" style="position: fixed; bottom: 5rem; margin-left: -2rem;"
+                    type="button" data-toggle="modal" data-target="#compose-modal">
+                <i class="material-icons">edit</i>
               </button>
-              <a class="navbar-brand" href="{% url 'home' %}">Bootcamp</a>
-            </div>
-            <div class="collapse navbar-collapse" id="menu">
-              <ul class="nav navbar-nav">
-                <li>
-                  <a href="#" id="notifications" data-container="body" data-toggle="popover" data-placement="bottom" title="Notifications">
-                    <span class="glyphicon glyphicon-bell"></span>
-                  </a>
-                </li>
-                <li><a href="{% url 'feeds' %}">{% trans 'Feed' %}</a></li>
-                <li><a href="{% url 'articles' %}">{% trans 'Articles' %}</a></li>
-                <li><a href="{% url 'questions' %}">{% trans 'Q&A' %}</a></li>
-                <li><a href="{% url 'network' %}">{% trans 'Network' %}</a></li>
-                <li><a href="{% url 'inbox' %}">Inbox  <span class="glyphicon glyphicon-envelope" style="display: none" id="unread-count"></span></a></li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
-                {% if not hide_search %}
-                  <form class="navbar-form navbar-left" role="search" action="{% url 'search' %}">
-                    <div class="input-group" style="width:210px">
-                      <input type="text" class="form-control" id="auto-search" name="q" placeholder="Search">
-                      <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                      </span>
-                    </div>
-                  </form>
-                {% endif %}
-                <!-- JQuery code for Ajax autocomplete search suggestion -->
-                <script type="text/javascript">
-                  $(function() {
-                      $("#auto-search").autocomplete({
-                          source: "{% url 'autocomplete' %}",
-                          minLength: 2
-                      });
-                  });
-                  var currentUser = "{{ user.username }}"
-                </script>
-            <!-- End JQuery code for Ajax autocomplete search suggestion -->
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.profile.get_screen_name }} <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url 'profile' user.username %}">{% trans 'My Profile' %}</a></li>
-                    <li><a href="{% url 'settings' %}">{% trans 'Account Settings' %}</a></li>
-                    <li class="divider"></li>
-                    <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
+            </li>
+          </ul>
         </nav>
+        <nav class="navbar-nav fixed-bottom navbar-dark bg-primary nav-justified justify-content-center">
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'articles' %}active{% endif %}" href="{% url 'articles' %}"><i class="material-icons">today</i><br>Today</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'feeds' %}active{% endif %}" href="{% url 'feeds' %}"><i class="material-icons">ballot</i><br>Feeds</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'search' %}active{% endif %}" href="{% url 'search' %}"><i class="material-icons">compass_calibration</i><br>Search</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'messenger' %}active{% endif %}" href="{% url 'inbox' %}"><i class="material-icons">sms</i><br>Inbox</a>
+          <a class="nav-item nav-link waves-attach waves-effect {% if tab == 'settings' %}active{% endif %}" href="{% url 'settings' %}"><i class="material-icons">account_circle</i><br>Profile</a>
+        </nav>
+        {% endblock nav %}
       </header>
       <main>
-        <div class="container">
+        <!-- <div class="container"> -->
           {% block main %}
           {% endblock main %}
-        </div>
+        <!-- </div> -->
       </main>
+      <div class="modal" id="compose-modal" tabindex="-1" role="dialog" aria-labelledby="compose-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="compose-modal-label">New post</h5>
+              <button type="button" class="close btn-cancel-compose" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form role="form" enctype="multipart/form-data" id="compose-form">
+                {% csrf_token %}
+                <input type="hidden" name="last_feed">
+                <textarea class="form-control" rows="3" name="post"></textarea>
+                {{ file_form }}
+              </form>
+              {% include 'upload_template.html' %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-cancel-compose" data-dismiss="modal">Close</button>
+              <button id="btn-post" type="button" class="btn btn-primary">Post</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <script src="{% static 'js/notifications.js' %}"></script>
+      <script src="{% static 'ajaxuploader/js/fileuploader.js' %}"></script>
+      <script src="{% static 'file_form/file_form.js' %}"></script>
+      <script type="text/javascript">
+        $(function() {
+          initUploadFields($('#compose-form'));
+        });
+        $(function () {
+          Waves.attach('.waves-attach');
+          Waves.init({
+            duration: 600
+          });
+        });
+        var currentUser = "{{ user.username }}";
+        $(".feed_gallery").justifiedGallery({
+          rowHeight : 160,
+          lastRow : 'justify',
+          margins : 0
+        });
+      </script>
     {% endblock body %}
-    <script src="{% static 'js/ga.js' %}"></script>
   </body>
 </html>

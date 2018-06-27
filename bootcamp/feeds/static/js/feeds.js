@@ -1,5 +1,6 @@
 $(function () {
     var page_title = $(document).attr("title");
+    var shared_post;
 
     // WebSocket connection management block.
     // Correctly decide between ws:// and wss://
@@ -38,61 +39,9 @@ $(function () {
         $(document).attr("title", page_title);
     }
 
-    $("body").keydown(function (evt) {
-        var keyCode = evt.which?evt.which:evt.keyCode;
-        if (evt.ctrlKey && keyCode == 80) {
-            $(".btn-compose").click();
-            return false;
-        }
-    });
-
-    $("#compose-form textarea[name='post']").keydown(function (evt) {
-        var keyCode = evt.which?evt.which:evt.keyCode;
-        if (evt.ctrlKey && (keyCode == 10 || keyCode == 13)) {
-            $(".btn-post").click();
-        }
-    });
-
-    $(".btn-compose").click(function () {
-        if ($(".compose").hasClass("composing")) {
-            $(".compose").removeClass("composing");
-            $(".compose").slideUp();
-        }
-        else {
-            $(".compose").addClass("composing");
-            $(".compose textarea").val("");
-            $(".compose").slideDown(400, function () {
-                $(".compose textarea").focus();
-            });
-        }
-    });
-
-    $(".btn-cancel-compose").click(function () {
-        $(".compose").slideUp();
-    });
-
-    $(".btn-post").click(function () {
-        var last_feed = $(".stream li:first-child").attr("feed-id");
-        if (last_feed == undefined) {
-            last_feed = "0";
-        }
-        $("#compose-form input[name='last_feed']").val(last_feed);
-        $.ajax({
-            url: '/feeds/post/',
-            data: $("#compose-form").serialize(),
-            type: 'post',
-            cache: false,
-            success: function (data) {
-                $("ul.stream").prepend(data);
-                $(".compose").slideUp();
-                $(".compose").removeClass("composing");
-                hide_stream_update();
-            }
-        });
-    });
-
     $("ul.stream").on("click", ".like", function () {
-        var li = $(this).closest("li");
+        var post = $(this).closest(".post");
+        var li = $(post).closest("li");
         var feed = $(li).attr("feed-id");
         var csrf = $(li).attr("csrf");
         $.ajax({
@@ -104,15 +53,45 @@ $(function () {
             type: 'post',
             cache: false,
             success: function (data) {
-                if ($(".like", li).hasClass("unlike")) {
-                    $(".like", li).removeClass("unlike");
-                    $(".like .text", li).text("Like");
+                if ($(".like", li).hasClass("text-primary")) {
+                    $(".like", li).removeClass("text-primary");
+                    $(".like", li).removeClass("active");
+                    // $(".like .material-icons", li).text("favorite_border");
                 }
                 else {
-                    $(".like", li).addClass("unlike");
-                    $(".like .text", li).text("Unlike");
+                    $(".like", li).addClass("active");
+                    $(".like", li).addClass("text-primary");
+                    // $(".like .material-icons", li).text("favorite");
                 }
                 $(".like .like-count", li).text(data);
+            }
+        });
+        return false;
+    });
+
+    $("ul.stream").on("click", ".share", function () {
+        var post = $(this).closest(".post");
+        var li = $(post).closest("li");
+        var feed = $(li).attr("feed-id");
+        $("#share-form input[name='feed']").val(feed);
+        shared_post = li;
+    });
+
+
+    $('#share-modal').on('shown.bs.modal', function() {
+        textarea = $("#share-form textarea[name='post']");
+        textarea.val("");
+    });
+
+    $("#share-modal").on("click", "#btn-share", function () {
+        $.ajax({
+            url: '/feeds/share/',
+            data: $("#share-form").serialize(),
+            type: 'post',
+            cache: false,
+            success: function (data) {
+                $(".btn-cancel-share").click();
+                $(".share .share-count", shared_post).text(data);
             }
         });
         return false;
@@ -183,7 +162,12 @@ $(function () {
                 },
                 success: function (data) {
                     if (data.length > 0) {
-                        $("ul.stream").append(data)
+                        $("ul.stream").append(data);
+                        $(".feed_gallery").justifiedGallery({
+                            rowHeight : 160,
+                            lastRow : 'justify',
+                            margins : 0
+                        });
                     }
                     else {
                         $("#load_feed").addClass("no-more-feeds");
@@ -210,6 +194,11 @@ $(function () {
             cache: false,
             success: function (data) {
                 $("ul.stream").prepend(data);
+                $(".feed_gallery").justifiedGallery({
+                    rowHeight : 160,
+                    lastRow : 'justify',
+                    margins : 0
+                });
             },
             complete: function () {
                 hide_stream_update();
@@ -238,10 +227,6 @@ $(function () {
                 });
             }
         });
-    });
-
-    $("#compose-form textarea[name='post']").keyup(function () {
-        $(this).count(255);
     });
 
     function update_feeds () {

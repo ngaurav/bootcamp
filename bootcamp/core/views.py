@@ -16,7 +16,6 @@ from bootcamp.core.forms import ChangePasswordForm, ProfileForm
 from bootcamp.feeds.views import FEEDS_NUM_PAGES, feeds
 from bootcamp.feeds.models import Feed
 from bootcamp.articles.models import Article, ArticleComment
-from bootcamp.questions.models import Question, Answer
 from bootcamp.activities.models import Activity
 from bootcamp.messenger.models import Message
 
@@ -59,8 +58,6 @@ def profile(request, username):
     article_count = Article.objects.filter(create_user=page_user).count()
     article_comment_count = ArticleComment.objects.filter(
         user=page_user).count()
-    question_count = Question.objects.filter(user=page_user).count()
-    answer_count = Answer.objects.filter(user=page_user).count()
     activity_count = Activity.objects.filter(user=page_user).count()
     messages_count = Message.objects.filter(
         Q(from_user=page_user) | Q(user=page_user)).count()
@@ -70,13 +67,10 @@ def profile(request, username):
         'feeds_count': feeds_count,
         'article_count': article_count,
         'article_comment_count': article_comment_count,
-        'question_count': question_count,
-        'global_interactions': activity_count + article_comment_count + answer_count + messages_count,  # noqa: E501
-        'answer_count': answer_count,
+        'global_interactions': activity_count + article_comment_count + messages_count,  # noqa: E501
         'bar_data': [
-            feeds_count, article_count, article_comment_count, question_count,
-            answer_count, activity_count],
-        'bar_labels': json.dumps('["Feeds", "Articles", "Comments", "Questions", "Answers", "Activities"]'),  # noqa: E501
+            feeds_count, article_count, article_comment_count, activity_count],
+        'bar_labels': json.dumps('["Feeds", "Articles", "Comments", "Activities"]'),  # noqa: E501
         'line_labels': datepoints,
         'line_data': data,
         'feeds': feeds,

@@ -5,19 +5,12 @@
 {% block title %} {% trans 'Articles' %} {% endblock %}
 
 {% block head %}
-  <link href="{% static 'css/articles.css' %}" rel="stylesheet">
+  <!-- <link href="{% static 'css/articles.css' %}" rel="stylesheet"> -->
 {% endblock head %}
 
 {% block main %}
-  <div class="page-header">
-    <a href="{% url 'write' %}" class="btn btn-primary pull-right">
-      <span class="glyphicon glyphicon-pencil"></span> {% trans 'Write Article' %}
-    </a>
-    <a href="{% url 'drafts' %}" class="btn btn-default pull-right" style="margin-right: .8em">{% trans 'Drafts' %}</a>
-    <h1>{% trans 'Articles' %}</h1>
-  </div>
   <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 pr-5 pl-5 max-wd-60">
       <section class="articles">
         {% for article in articles %}
           {% include 'articles/partial_article.html' with article=article is_articles=forloop %}
@@ -26,16 +19,16 @@
         {% endfor %}
       </section>
     </div>
-    <div class="col-md-2 popular-tags">
-      <h4>{% trans 'Popular Tags' %}</h4>
-      {% for tag, count in popular_tags %}
-        <a href="{% url 'tag' tag %}"><span class="label label-default">{{ count }} {{ tag }}</span></a>
-      {% endfor %}
-    </div>
   </div>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 pr-5 pl-5 max-wd-60">
       {% include 'paginator.html' with paginator=articles %}
     </div>
   </div>
 {% endblock main %}
+
+{% block nav %}
+  {% with tab="articles" %}
+    {{block.super}}
+  {% endwith %}
+{% endblock nav %}

@@ -5,7 +5,6 @@ from django.test import TestCase
 from bootcamp.feeds.models import Feed
 from bootcamp.authentication.models import Profile
 from bootcamp.activities.models import Notification
-from bootcamp.questions.models import Question, Answer
 
 
 class TestModels(TestCase):
@@ -45,17 +44,6 @@ class TestModels(TestCase):
             post='A not so long text',
             likes=0,
             comments=0
-        )
-        self.question = Question.objects.create(
-            user=self.other_user, title='This is a sample question',
-            description='This is a sample question description',
-            tags='test1,test2')
-        self.answer = Answer.objects.create(
-            user=self.user,
-            question=self.question,
-            description='A reaaaaally loooong content',
-            votes=0,
-            is_accepted=True
         )
         self.profile.url = 'trybootcamp.vitorfs.com'
         self.profile.location = 'My City'
@@ -109,46 +97,3 @@ class TestModels(TestCase):
         self.user.profile.notify_also_commented(self.feed)
         new_also_commented_count = Feed.get_comments(self.feed).count()
         assert also_commented_count < new_also_commented_count
-
-    def test_favorited_notification(self):
-        favorited_count = Notification.objects.filter(
-            notification_type='F').count()
-        self.user.profile.notify_favorited(self.question)
-        new_favorited_count = Notification.objects.filter(
-            notification_type='F').count()
-        assert favorited_count < new_favorited_count
-
-    def test_unfavorited_notification(self):
-        self.user.profile.notify_favorited(self.question)
-        favorited_count = Notification.objects.filter(
-            notification_type='F').count()
-        self.user.profile.unotify_favorited(self.question)
-        new_favorited_count = Notification.objects.filter(
-            notification_type='F').count()
-        assert favorited_count > new_favorited_count
-
-    def test_answered_notification(self):
-        answered_count = Notification.objects.filter(
-            notification_type='A').count()
-        self.user.profile.notify_answered(self.question)
-        new_answered_count = Notification.objects.filter(
-            notification_type='A').count()
-        assert answered_count < new_answered_count
-
-    def test_notify_accepted_answer(self):
-        accepted_count = Notification.objects.filter(
-            notification_type='W').count()
-        self.other_user.profile.notify_accepted(self.answer)
-        new_accepted_count = Notification.objects.filter(
-            notification_type='W').count()
-        assert accepted_count < new_accepted_count
-
-    def test_unnotify_accepted_answer(self):
-        self.other_user.profile.notify_accepted(self.answer)
-        accepted_count = Notification.objects.filter(
-            notification_type='W').count()
-
-        self.other_user.profile.unotify_accepted(self.answer)
-        new_accepted_count = Notification.objects.filter(
-            notification_type='W').count()
-        assert accepted_count > new_accepted_count

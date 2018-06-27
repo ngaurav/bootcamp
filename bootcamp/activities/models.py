@@ -12,23 +12,15 @@ from django.utils.html import escape
 
 @python_2_unicode_compatible
 class Activity(models.Model):
-    FAVORITE = 'F'
     LIKE = 'L'
-    UP_VOTE = 'U'
-    DOWN_VOTE = 'D'
     ACTIVITY_TYPES = (
-        (FAVORITE, 'Favorite'),
         (LIKE, 'Like'),
-        (UP_VOTE, 'Up Vote'),
-        (DOWN_VOTE, 'Down Vote'),
         )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     activity_type = models.CharField(max_length=1, choices=ACTIVITY_TYPES)
     date = models.DateTimeField(auto_now_add=True)
     feed = models.IntegerField(null=True, blank=True)
-    question = models.IntegerField(null=True, blank=True)
-    answer = models.IntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Activity'
@@ -89,40 +81,36 @@ class Activity(models.Model):
 class Notification(models.Model):
     LIKED = 'L'
     COMMENTED = 'C'
-    FAVORITED = 'F'
-    ANSWERED = 'A'
-    ACCEPTED_ANSWER = 'W'
     EDITED_ARTICLE = 'E'
-    ALSO_COMMENTED = 'S'
+    ALSO_COMMENTED = 'A'
+    SHARED = 'S'
     LOGGED_IN = 'I'
     LOGGED_OUT = 'O'
-    UPVOTED_Q = 'U'
-    UPVOTED_A = 'V'
     NOTIFICATION_TYPES = (
         (LIKED, 'Liked'),
         (COMMENTED, 'Commented'),
-        (FAVORITED, 'Favorited'),
-        (ANSWERED, 'Answered'),
-        (ACCEPTED_ANSWER, 'Accepted Answer'),
         (EDITED_ARTICLE, 'Edited Article'),
         (ALSO_COMMENTED, 'Also Commented'),
+        (SHARED, 'Shared'),
         (LOGGED_IN, 'Logged In'),
         (LOGGED_OUT, 'Logged Out'),
-        (UPVOTED_Q, 'Up Voted Question'),
-        (UPVOTED_A, 'Up Voted Answer'),
         )
 
-    _LIKED_TEMPLATE = '<a href="/{0}/">{1}</a> liked your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
-    _COMMENTED_TEMPLATE = '<a href="/{0}/">{1}</a> commented on your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
-    _FAVORITED_TEMPLATE = '<a href="/{0}/">{1}</a> favorited your question: <a href="/questions/{2}/">{3}</a>'  # noqa: E501
-    _ANSWERED_TEMPLATE = '<a href="/{0}/">{1}</a> answered your question: <a href="/questions/{2}/">{3}</a>'  # noqa: E501
-    _ACCEPTED_ANSWER_TEMPLATE = '<a href="/{0}/">{1}</a> accepted your answer: <a href="/questions/{2}/">{3}</a>'  # noqa: E501
-    _UPVOTED_QUESTION_TEMPLATE = '<a href="/{0}/">{1}</a> upvoted your question: <a href="/questions/{2}/">{3}</a>'  # noqa: E501
-    _UPVOTED_ANSWER_TEMPLATE = '<a href="/{0}/">{1}</a> upvoted your answer: <a href="/questions/{2}/">{3}</a>'  # noqa: E501
-    _EDITED_ARTICLE_TEMPLATE = '<a href="/{0}/">{1}</a> edited your article: <a href="/article/{2}/">{3}</a>'  # noqa: E501
-    _ALSO_COMMENTED_TEMPLATE = '<a href="/{0}/">{1}</a> also commentend on the post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
-    _USER_LOGIN_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged in.'  # noqa: E501
-    _USER_LOGOUT_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged out.'  # noqa: E501
+    # _LIKED_TEMPLATE = '<a href="/{0}/">{1}</a> liked your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    # _COMMENTED_TEMPLATE = '<a href="/{0}/">{1}</a> commented on your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    # _EDITED_ARTICLE_TEMPLATE = '<a href="/{0}/">{1}</a> edited your article: <a href="/article/{2}/">{3}</a>'  # noqa: E501
+    # _ALSO_COMMENTED_TEMPLATE = '<a href="/{0}/">{1}</a> also commentend on the post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    # _SHARED_TEMPLATE = '<a href="/{0}/">{1}</a> shared your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    # _USER_LOGIN_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged in.'  # noqa: E501
+    # _USER_LOGOUT_TEMPLATE = '<a href="/{0}/">{1}</a> has just logged out.'  # noqa: E501
+
+    _LIKED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} liked your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    _COMMENTED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} commented on your post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    _EDITED_ARTICLE_TEMPLATE = '<a class="dropdown-item" href="/article/{2}/">{1} edited your article: <a href="/article/{2}/">{3}</a>'  # noqa: E501
+    _ALSO_COMMENTED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} also commentend on the post: <a href="/feeds/{2}/">{3}</a>'  # noqa: E501
+    _SHARED_TEMPLATE = '<a class="dropdown-item" href="/feeds/{2}/">{1} shared your post.</a>'  # noqa: E501
+    _USER_LOGIN_TEMPLATE = '<a class="dropdown-item" href="/{0}/">{1} has just logged in.</a>'  # noqa: E501
+    _USER_LOGOUT_TEMPLATE = '<a class="dropdown-item" href="/{0}/">{1} has just logged out.</a>'  # noqa: E501
 
     from_user = models.ForeignKey(
         User, related_name='+', on_delete=models.CASCADE)
@@ -131,10 +119,6 @@ class Notification(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     feed = models.ForeignKey(
         'feeds.Feed', null=True, blank=True, on_delete=models.CASCADE)
-    question = models.ForeignKey(
-        'questions.Question', null=True, blank=True, on_delete=models.CASCADE)
-    answer = models.ForeignKey(
-        'questions.Answer', null=True, blank=True, on_delete=models.CASCADE)
     article = models.ForeignKey(
         'articles.Article', null=True, blank=True, on_delete=models.CASCADE)
     notification_type = models.CharField(max_length=1,
@@ -163,30 +147,6 @@ class Notification(models.Model):
                 escape(self.get_summary(self.feed.post))
                 )
 
-        elif self.notification_type == self.FAVORITED:
-            return self._FAVORITED_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.question.pk,
-                escape(self.get_summary(self.question.title))
-                )
-
-        elif self.notification_type == self.ANSWERED:
-            return self._ANSWERED_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.question.pk,
-                escape(self.get_summary(self.question.title))
-                )
-
-        elif self.notification_type == self.ACCEPTED_ANSWER:
-            return self._ACCEPTED_ANSWER_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.answer.question.pk,
-                escape(self.get_summary(self.answer.description))
-                )
-
         elif self.notification_type == self.EDITED_ARTICLE:
             return self._EDITED_ARTICLE_TEMPLATE.format(
                 escape(self.from_user.username),
@@ -203,6 +163,14 @@ class Notification(models.Model):
                 escape(self.get_summary(self.feed.post))
                 )
 
+        elif self.notification_type == self.SHARED:
+            return self._SHARED_TEMPLATE.format(
+                escape(self.from_user.username),
+                escape(self.from_user.profile.get_screen_name()),
+                self.feed.pk,
+                escape(self.get_summary(self.feed.post))
+                )
+
         elif self.notification_type == self.LOGGED_IN:
             return self._USER_LOGIN_TEMPLATE.format(
                 escape(self.from_user.username),
@@ -213,22 +181,6 @@ class Notification(models.Model):
             return self._USER_LOGOUT_TEMPLATE.format(
                 escape(self.from_user.username),
                 escape(self.from_user.profile.get_screen_name())
-                )
-
-        elif self.notification_type == self.UPVOTED_Q:
-            return self._UPVOTED_QUESTION_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.question.pk,
-                escape(self.get_summary(self.question.title))
-                )
-
-        elif self.notification_type == self.UPVOTED_A:
-            return self._UPVOTED_ANSWER_TEMPLATE.format(
-                escape(self.from_user.username),
-                escape(self.from_user.profile.get_screen_name()),
-                self.answer.question.pk,
-                escape(self.get_summary(self.answer.description))
                 )
 
         else:

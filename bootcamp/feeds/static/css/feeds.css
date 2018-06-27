@@ -5,21 +5,22 @@ ul.stream {
 
 ul.stream li {
   list-style: none;
-  border-bottom: 1px solid #eeeeee;
+  /* border-bottom: 1px solid #eeeeee; */
   padding: 1em 0;
 }
 
-ul.stream li:last-child {
+/* ul.stream li:last-child {
   border-bottom: none;
-}
+} */
 
 ul.stream li a img.user {
-  width: 60px;
-  border-radius: 100px;
+  width: 3rem;
+  margin-right: 0.5rem;
+  border-radius: 3rem;
   float: left;
 }
 
-ul.stream li div.post {
+/* ul.stream li div.post {
   margin-left: 60px;
   padding: 0 0 0 1.2em;
   overflow-x: auto;
@@ -47,7 +48,7 @@ ul.stream li div.post div.interaction {
 ul.stream li div.post div.interaction a {
   margin-right: .6em;
   font-size: .8em;
-}
+} */
 
 .stream-update {
   text-align: center;
@@ -78,14 +79,12 @@ ul.stream li div.post div.interaction a {
 }
 
 .comments {
-  margin-top: .6em;
   display: none;
 }
 
 .comments ol {
   margin: .8em 0 0;
   padding: .2em 0;
-  background-color: #f4f4f4;
   border-radius: 3px;
   overflow-x: auto;
 }
@@ -97,7 +96,7 @@ ul.stream li div.post div.interaction a {
 
 .comments ol li img.user-comment {
   width: 35px;
-  border-radius: 4px;
+  border-radius: 35px;
   float: left;
   margin-left: 10px;
 }
@@ -141,18 +140,6 @@ ul.stream li div.post div.interaction a {
   text-align: center;
 }
 
-.remove-feed {
-  color: #bbbbbb; 
-  font-size: .8em; 
-  padding-top: .2em;
-  float: right;
-  cursor: pointer;
-}
-
-.remove-feed:hover {
-  color: #333333;
-}
-
 .panel-feed {
   margin-top: 20px;
 }
@@ -164,4 +151,11 @@ ul.stream li div.post div.interaction a {
 .feed-container {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.blockquote-small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
 }

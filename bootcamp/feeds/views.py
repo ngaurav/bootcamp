@@ -10,7 +10,8 @@ from django.template.loader import render_to_string
 
 from bootcamp.activities.models import Activity
 from bootcamp.decorators import ajax_required
-from bootcamp.feeds.models import Feed
+from bootcamp.feeds.models import Feed, InputFile
+from bootcamp.feeds.forms import MultipleInputFileForm
 
 FEEDS_NUM_PAGES = 10
 
@@ -121,11 +122,19 @@ def post(request):
     csrf_token = (csrf(request)['csrf_token'])
     feed = Feed()
     feed.user = user
+    form = MultipleInputFileForm(request.POST)
     post = request.POST['post']
     post = post.strip()
-    if len(post) > 0:
+    if len(post) > 0 or form.is_valid():
         feed.post = post[:255]
         feed.save()
+        if form.is_valid():
+            for f in form.cleaned_data['input_file']:
+                InputFile.objects.create(
+                    feed=feed,
+                    input_file=f
+                )
+            form.delete_temporary_files()
 
     html = _html_feeds(last_feed, user, csrf_token)
     return HttpResponse(html)
@@ -178,6 +187,32 @@ def comment(request):
 
 @login_required
 @ajax_required
+def share(request):
+    if request.method == 'POST':
+        feed_id = request.POST['feed']
+        feed = Feed.objects.get(pk=feed_id)
+        parent = feed.parent
+        if parent:
+            return HttpResponseBadRequest()
+
+        post = request.POST['post']
+        post = post.strip()
+        if len(post) > 0:
+            post = post[:255]
+        else:
+            post = ""
+        user = request.user
+        feed.share(user=user, post=post)
+        user.profile.notify_shared(feed)
+
+        return HttpResponse(feed.calculate_shares())
+
+    else:
+        return HttpResponseBadRequest()
+
+
+@login_required
+@ajax_required
 def update(request):
     first_feed = request.GET.get('first_feed')
     last_feed = request.GET.get('last_feed')
@@ -216,12 +251,16 @@ def remove(request):
         if feed.user == request.user:
             likes = feed.get_likes()
             parent = feed.parent
+            shared_feed = feed.shared_feed
             for like in likes:
                 like.delete()
 
             feed.delete()
             if parent:
                 parent.calculate_comments()
+            if shared_feed:
+                shared_feed.calculate_shares()
+                request.user.profile.unotify_liked(feed)
 
             return HttpResponse()
 

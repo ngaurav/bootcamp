@@ -39,7 +39,7 @@ class Profile(models.Model):
         return url
 
     def get_picture(self):
-        no_picture = 'http://trybootcamp.vitorfs.com/static/img/user.png'
+        no_picture = '/static/img/user.png'
         try:
             filename = settings.MEDIA_ROOT + '/profile_pictures/' +\
                 self.user.username + '.jpg'
@@ -80,6 +80,20 @@ class Profile(models.Model):
     def unotify_liked(self, feed):
         if self.user != feed.user:
             Notification.objects.filter(notification_type=Notification.LIKED,
+                                        from_user=self.user, to_user=feed.user,
+                                        feed=feed).delete()
+
+    def notify_shared(self, feed):
+        if self.user != feed.user:
+            Notification(notification_type=Notification.SHARED,
+                         from_user=self.user, to_user=feed.user,
+                         feed=feed).save()
+
+        self.group_notification('shared')
+
+    def unotify_shared(self, feed):
+        if self.user != feed.user:
+            Notification.objects.filter(notification_type=Notification.SHARED,
                                         from_user=self.user, to_user=feed.user,
                                         feed=feed).delete()
 

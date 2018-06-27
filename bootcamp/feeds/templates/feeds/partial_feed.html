@@ -3,52 +3,91 @@
 
 
 <li feed-id="{{ feed.pk }}" csrf="{{ csrf_token }}">
-  <div class="feed-container">
-    <a href="{% url 'profile' feed.user.username %}"><img
-        src="{{ feed.user.profile.get_picture }}" class="user"></a>
-    <div class="post">
-      {% if feed.user == user %}
-        <span class="glyphicon glyphicon-remove remove-feed"
-              title="{% trans 'Click to remove this feed' %}"></span>
-      {% endif %}
-      <h3>
-        <a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a>
-        <small>{{ feed.date|naturaltime }}</small>
-      </h3>
-      <p>{{ feed.linkfy_post|safe }}</p>
-      <div class="interaction" id="interaction">
-        {% if user in feed.get_likers %}
-          <a href="#" style="text-decoration: none;"
-             class="like unlike"
-             title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-            <span class="text">{% trans 'Unlike' %}</span>
-            (<span class="like-count">{{ feed.likes }}</span>)
-          </a>
-        {% else %}
-          <a href="#" style="text-decoration: none;" class="like"
-             title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-            <span class="text">{% trans 'Like' %}</span>
-            (<span class="like-count">{{ feed.likes }}</span>)
-          </a>
+  <div class="card">
+    <div class="card-header pb-0">
+      <a href="{% url 'profile' feed.user.username %}"><img src="{{ feed.user.profile.get_picture }}" class="user"></a>
+      <a class="float-right dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="javascript:void(0)">Report</a>
+        {% if feed.user == user %}
+        <a class="dropdown-item remove-feed" href="javascript:void(0)" 
+           title="{% trans 'Click to remove this feed' %}">Delete</a>
         {% endif %}
-        <a href="#" style="text-decoration: none;" class="comment">
-          <span
-              class="glyphicon glyphicon-comment"></span> {% trans 'Comment' %}
-          (<span class="comment-count">{{ feed.comments }}</span>)
-        </a>
       </div>
-      <div class="comments">
+      <h5 class="mb-3">
+        <a class="font-weight-bold" href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a>
+        {% if feed.shared_feed %}
+          shared a
+          <a href="{% url 'feed' feed.shared_feed.pk %}">post</a>
+        {% endif %}
+      </h5>
+      <h6 class="card-subtitle mb-3"><small>{{ feed.date|naturaltime }}</small></h6>
+      
+      {% if feed.post %}
+        <p class="card-text mb-3">{{ feed.linkfy_post|safe }}</p>
+      {% endif %}
+      
+    </div>
+    
+    {% if feed.shared_feed %}
+      <div class="feed_gallery">
+        {% for image in feed.shared_feed.files.all %}
+        <a href={{ image.input_file.url }}>
+          <img class="" alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+        </a>
+        {% endfor %}
+      </div>
+      
+      <div class="card-header">
+        <blockquote class="blockquote mb-0">
+          <h5 class="mb-3">
+            <a href="{% url 'profile' feed.shared_feed.user.username %}">{{ feed.shared_feed.user.profile.get_screen_name }}</a>
+          </h5>
+          <h6 class="card-subtitle mb-2"><small>{{ feed.shared_feed.date|naturaltime }}</small></h6>
+          {% if feed.shared_feed.post %}
+          <footer class="blockquote-small">{{ feed.shared_feed.linkfy_post|safe }}</footer>
+          {% endif %}
+        </blockquote>
+      </div>
+      
+    {% else %}
+      <div class="feed_gallery">
+        {% for image in feed.files.all %}
+        <a href={{ image.input_file.url }}>
+          <img alt="{{ image.input_file }}" src="{{ image.input_file.url }}">
+        </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="post">
+      <nav class="nav nav-pills nav-justified">
+          {% if user in feed.get_likers %}
+            <a class="nav-item nav-link waves-attach waves-effect like active text-primary" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+              <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
+            </a>
+          {% else %}
+            <a class="nav-item nav-link waves-attach waves-effect like" href="javascript:void(0)" title="{% for i in feed.get_likers %}{{ i }}&#10;{% endfor %}">
+              <span class="material-icons">thumb_up_alt</span>&nbsp;<span class="like-count">{{ feed.likes }}</span>
+            </a>
+          {% endif %}
+          <a class="nav-item nav-link waves-attach waves-effect comment">
+            <span class="material-icons">insert_comment</span>&nbsp;<span class="comment-count">{{ feed.comments }}</span>
+          </a>
+          <a class="nav-item nav-link waves-attach waves-effect share" data-toggle="modal" data-target="#share-modal">
+            <span class="material-icons">share</span>&nbsp;<span class="share-count">{{ feed.shares }}</span>
+          </a>
+      </nav>
+      <div class="comments card-footer mt-0">
         <form role="form" method="post" action="{{ comment }}"
               onsubmit="return false">
           {% csrf_token %}
           <input type="hidden" name="feed" value="{{ feed.pk }}">
           <input type="text" class="form-control input-sm"
-                 placeholder="{% trans 'Write a comment...' %}"
-                 name="post" maxlength="255">
+                  placeholder="{% trans 'Write a comment...' %}"
+                  name="post" maxlength="255">
         </form>
-        <ol class="clearfix">
+        <ol class="clearfix bg-light">
           {% comment %} Place holder to load feed comments {% endcomment %}
         </ol>
       </div>
